@@ -155,4 +155,4 @@ License
   See the License for the specific language governing permissions and
   limitations under the License.
 
- [binary]: https://bintray.com/lucapompei/ReactiveRest/ReactiveRest
+ [binary]: https://dl.bintray.com/lucapompei/ReactiveRest/
