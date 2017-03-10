@@ -1,17 +1,19 @@
 # Reactive Rest
 =============================
 
-The Reactive Rest client is a simple and fast HTTP client, based on Retrofit implementation, which help you to make REST communications in a rapidly and easy way.
+The Reactive Rest client is a simple and fast HTTP client, based on Retrofit 2 implementation, which help you to make REST communications in a rapidly and easy way.
 
-Using this library, you can make 4 different types of HTTP REST communication:
+Using this library, you can make 4 different types of HTTP REST communications:
 
 1) <strong>Synchronous HTTP request:</strong> each HTTP response is synchronously obtained;
     
-2) <strong>Asynchronous HTTP request:</strong> each HTTP response is asynchronously obtained, using the Retrofit call queue;
+2) <strong>Asynchronous HTTP request:</strong> each HTTP response is asynchronously obtained, using the Retrofit queue implementation;
     
-3) <strong>Event based HTTP request:</strong> each HTTP response is asynchronously processed and then dispatched on a common Event bus to all registered entity (i.e. it's used the Guava Event Bus implementation for this purpose); 
+3) <strong>Event based HTTP request:</strong> each HTTP response is asynchronously processed and then dispatched on a common Event Bus to all registered entity (i.e. it's used the Guava Event Bus implementation for this purpose); 
     
 4) <strong>Reactive HTTP request:</strong> based on Reactive programming paradigm, each HTTP response is asynchronously prepared, taking the advantage of using Observable, so that each Observer interested and subscribed to it, can obtain the response when it is processed.
+
+The Reactive REST client supports GET, POST, PUT and DELETE HTTP method.
 
 API Usage
 --------
@@ -21,35 +23,35 @@ API Usage
 
 To define a basic HTTP request you must specify the base url to call and the api endpoint. As default, it's used the GET HTTP method.
     
-    ```java
-    // Define mandatory parameters
-    String baseUrl = "https://www.example.com/api/v2/";
-    String apiEndpoint = "getServices";
-        
-    // Basic HTTP request
-    HttpRequest httpRequest = new HttpRequest.
-        Builder(baseUrl, apiEndpoint)
-        .build();
-    ```
+```java
+// Define mandatory parameters
+String baseUrl = "https://www.example.com/api/v2/";
+String apiEndpoint = "getServices";
+    
+// Basic HTTP request
+HttpRequest httpRequest = new HttpRequest.
+    Builder(baseUrl, apiEndpoint)
+    .build();
+```
     
 To enrich your HTTP request, you can add one or more optional parameters (i.e. http method, headers, query string and body params).
 
-    ```java
-    // Define optional parameters
-    HttpMethod httpMethod = HttpMethod.GET;
-    Map<String, String> headers = ImmutableMap.of("AUTH_TOKEN", "1234567");
-    Map<String, String> queryParams = ImmutableMap.of("sort", "desc");
-    Map<String, String> bodyParams = ImmutableMap.of("code", "first");
-        
-    // Full HTTP request
-    HttpRequest httpRequest = new HttpRequest.
-        Builder(baseUrl, apiEndpoint)
-        .httpMethod(httpMethod)
-        .headers(headers)
-        .queryParams(queryParams)
-        .bodyParams(bodyParams)
-        .build();
-    ```
+```java
+// Define optional parameters
+HttpMethod httpMethod = HttpMethod.GET;
+Map<String, String> headers = ImmutableMap.of("AUTH_TOKEN", "1234567");
+Map<String, String> queryParams = ImmutableMap.of("sort", "desc");
+Map<String, String> bodyParams = ImmutableMap.of("code", "first");
+    
+// Full HTTP request
+HttpRequest httpRequest = new HttpRequest.
+    Builder(baseUrl, apiEndpoint)
+    .httpMethod(httpMethod)
+    .headers(headers)
+    .queryParams(queryParams)
+    .bodyParams(bodyParams)
+    .build();
+```
  
 2) Make REST communication:
 
@@ -62,7 +64,8 @@ To enrich your HTTP request, you can add one or more optional parameters (i.e. h
 - AsyncAPI:
 
     ```java
-    // Define a Java Consumer to handle success reponse and, optionally, another Consumer to handle error response
+    // Define a Java Consumer to handle success reponse 
+    // and, optionally, another Consumer to handle error response
     Consumer<HttpResponse> consumerOnSuccess;
     Consumer<Throwable> consumerOnError;
         
@@ -103,7 +106,8 @@ To enrich your HTTP request, you can add one or more optional parameters (i.e. h
 - ReactiveAPI:
 
     ```java
-    // Define a Reactive Consumer to handle success reponse and, optionally, another Consumer to handle error response
+    // Define a Reactive Consumer to handle success reponse 
+    // and, optionally, another Consumer to handle error response
     Consumer<HttpResponse> consumerOnSuccess;
     Consumer<Throwable> consumerOnError;
         
@@ -114,7 +118,7 @@ To enrich your HTTP request, you can add one or more optional parameters (i.e. h
     ReactiveAPI.call(httpRequest, consumerOnSuccess, consumerOnError);
     ```
 
-For a better comprehension some test classes are provided.
+For a better comprehension of ReactiveRest, some test classes are provided.
 
 Download
 --------
