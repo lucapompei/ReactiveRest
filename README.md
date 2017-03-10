@@ -19,7 +19,7 @@ API Usage
 
 1) Define a new HTTP request:
 
-    To define a basic HTTP request you must specify the base url to call and the api endpoint. As default, it's used the GET HTTP method.
+To define a basic HTTP request you must specify the base url to call and the api endpoint. As default, it's used the GET HTTP method.
     
     ```java
     // Define mandatory parameters
@@ -32,7 +32,7 @@ API Usage
         .build();
     ```
     
-    To enrich your HTTP request, you can add one or more optional parameters (i.e. http method, headers, query string and body params).
+To enrich your HTTP request, you can add one or more optional parameters (i.e. http method, headers, query string and body params).
 
     ```java
     // Define optional parameters
