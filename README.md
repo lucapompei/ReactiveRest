@@ -22,11 +22,11 @@ API Usage
     To define a basic HTTP request you must specify the base url to call and the api endpoint. As default, it's used the GET HTTP method.
     
     ```java
-    /* Define mandatory parameters */
+    // Define mandatory parameters
     String baseUrl = "https://www.example.com/api/v2/";
     String apiEndpoint = "getServices";
         
-    /* Basic HTTP request */
+    // Basic HTTP request
     HttpRequest httpRequest = new HttpRequest.
         Builder(baseUrl, apiEndpoint)
         .build();
@@ -35,13 +35,13 @@ API Usage
     To enrich your HTTP request, you can add one or more optional parameters (i.e. http method, headers, query string and body params).
 
     ```java
-    /* Define optional parameters */
+    // Define optional parameters
     HttpMethod httpMethod = HttpMethod.GET;
     Map<String, String> headers = ImmutableMap.of("AUTH_TOKEN", "1234567");
     Map<String, String> queryParams = ImmutableMap.of("sort", "desc");
     Map<String, String> bodyParams = ImmutableMap.of("code", "first");
         
-    /* Full HTTP request */
+    // Full HTTP request
     HttpRequest httpRequest = new HttpRequest.
         Builder(baseUrl, apiEndpoint)
         .httpMethod(httpMethod)
@@ -62,30 +62,30 @@ API Usage
 - AsyncAPI:
 
     ```java
-    /* Define a Java Consumer to handle success reponse and, optionally, another Consumer to handle error response */
+    // Define a Java Consumer to handle success reponse and, optionally, another Consumer to handle error response
     Consumer<HttpResponse> consumerOnSuccess;
     Consumer<Throwable> consumerOnError;
         
-    /* Call API */
+    // Call API
     AsyncAPI.call(httpRequest, consumerOnSuccess);
         
-    /* Call API handling error */
+    // Call API handling error
     AsyncAPI.call(httpRequest, consumerOnSuccess, consumerOnError);
     ```
 
 - EventAPI:
 
     ```java
-    /* Define an event identifier */
+    // Define an event identifier
     static String EVENT_IDENTIFIER = "MyEvent";
         
-    /* Register entity to Event Bus through a coordinator */
+    // Register entity to Event Bus through a coordinator
     CoordinatorAPI.getCoordinator().register(this);
         
-    /* Call API */
+    // Call API
     EventAPI.call(httpRequest, EVENT_IDENTIFIER);
             
-    /* Subscribe a method to handle HTTP response */
+    // Subscribe a method to handle HTTP response
     @Subscribe
     public void onConsumeMyEventEvent(EventResponse eventResponse) {
         if (CoordinatorAPI.getCoordinator().isEventForMe(eventResponse, EVENT_IDENTIFIER)) {
@@ -103,14 +103,14 @@ API Usage
 - ReactiveAPI:
 
     ```java
-    /* Define a Reactive Consumer to handle success reponse and, optionally, another Consumer to handle error response */
+    // Define a Reactive Consumer to handle success reponse and, optionally, another Consumer to handle error response
     Consumer<HttpResponse> consumerOnSuccess;
     Consumer<Throwable> consumerOnError;
         
-    /* Call API */
+    // Call API
     ReactiveAPI.call(httpRequest, consumerOnSuccess);
         
-    /* Call API handling error */
+    // Call API handling error
     ReactiveAPI.call(httpRequest, consumerOnSuccess, consumerOnError);
     ```
 
