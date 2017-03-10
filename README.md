@@ -6,8 +6,11 @@ The Reactive Rest client is a simple and fast HTTP client, based on Retrofit imp
 Using this library, you can make 4 different types of HTTP REST communication:
 
 1) <strong>Synchronous HTTP request:</strong> each HTTP response is synchronously obtained;
+    
 2) <strong>Asynchronous HTTP request:</strong> each HTTP response is asynchronously obtained, using the Retrofit call queue;
+    
 3) <strong>Event based HTTP request:</strong> each HTTP response is asynchronously processed and then dispatched on a common Event bus to all registered entity (i.e. it's used the Guava Event Bus implementation for this purpose); 
+    
 4) <strong>Reactive HTTP request:</strong> based on Reactive programming paradigm, each HTTP response is asynchronously prepared, taking the advantage of using Observable, so that each Observer interested and subscribed to it, can obtain the response when it is processed.
 
 API Usage
@@ -18,7 +21,7 @@ API Usage
 
     To define a basic HTTP request you must specify the base url to call and the api endpoint. As default, it's used the GET HTTP method.
     
-    ```
+    ```java
     /* Define mandatory parameters */
     String baseUrl = "https://www.example.com/api/v2/";
     String apiEndpoint = "getServices";
@@ -31,7 +34,7 @@ API Usage
     
     To enrich your HTTP request, you can add one or more optional parameters (i.e. http method, headers, query string and body params).
 
-    ```
+    ```java
     /* Define optional parameters */
     HttpMethod httpMethod = HttpMethod.GET;
     Map<String, String> headers = ImmutableMap.of("AUTH_TOKEN", "1234567");
@@ -52,13 +55,13 @@ API Usage
 
 - SyncAPI:
 
-    ```
+    ```java
     HttpResponse httpResponse = SyncAPI.call(httpRequest);
     ```
 
 - AsyncAPI:
 
-    ```
+    ```java
     /* Define a Java Consumer to handle success reponse and, optionally, another Consumer to handle error response */
     Consumer<HttpResponse> consumerOnSuccess;
     Consumer<Throwable> consumerOnError;
@@ -72,7 +75,7 @@ API Usage
 
 - EventAPI:
 
-    ```
+    ```java
     /* Define an event identifier */
     static String EVENT_IDENTIFIER = "MyEvent";
         
@@ -99,7 +102,7 @@ API Usage
 
 - ReactiveAPI:
 
-    ```
+    ```java
     /* Define a Reactive Consumer to handle success reponse and, optionally, another Consumer to handle error response */
     Consumer<HttpResponse> consumerOnSuccess;
     Consumer<Throwable> consumerOnError;
@@ -109,7 +112,6 @@ API Usage
         
     /* Call API handling error */
     ReactiveAPI.call(httpRequest, consumerOnSuccess, consumerOnError);
-    
     ```
 
 For a better comprehension some test classes are provided.
