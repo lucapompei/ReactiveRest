@@ -23,14 +23,14 @@ public class SyncAPI {
 
     /**
      * This API is used to formulate a synchronous api call on the base of the
-     * given {@param httpRequest} and return a {@link HttpResponse}
+     * given http request and return a {@link HttpResponse}
      *
      * @param httpRequest,
      *         a prepared {@link HttpRequest} used for api call
      * @return the http response encapsulated into a {@link HttpResponse} or {@code null} is some error occurs
-     * @throws ExecutionException,
+     * @throws ExecutionException
      *         if a problem occurred during the retrieving of REST client
-     * @throws IOException,
+     * @throws IOException
      *         if a problem occurred talking to the server
      */
     public static HttpResponse call(HttpRequest httpRequest) throws ExecutionException, IOException {

@@ -159,4 +159,4 @@ License
   See the License for the specific language governing permissions and
   limitations under the License.
 
- [binary]: https://dl.bintray.com/lucapompei/ReactiveRest/
+ [binary]: https://dl.bintray.com/lucapompei/maven/lp/reactive/ReactiveRest/

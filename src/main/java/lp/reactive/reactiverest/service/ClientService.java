@@ -32,7 +32,7 @@ public class ClientService {
 
     /**
      * A cache object used to handle multiple {@link Retrofit} REST client based
-     * on different {@param baseUrl}. If a cached object exists, the cache
+     * on different base url. If a cached object exists, the cache
      * retrieves it, otherwise the cache creates, caches and returns a new one.
      * The objects stored in cache expire after 1 hour spent by its last usage.
      * The cache stores up to {@value CACHE_REST_CLIENTS_SIZE} elements
@@ -49,7 +49,7 @@ public class ClientService {
 
     /**
      * Initialize a new {@link Retrofit} REST client, setting the given
-     * {@param baseUrl} and using a {@link JacksonConverterFactory} instance as default converter
+     * base url and using a {@link JacksonConverterFactory} instance as default converter
      *
      * @param baseUrl,
      *         the base url used by the new REST client
@@ -70,11 +70,13 @@ public class ClientService {
 
     /**
      * Using caching mechanisms, it retrieves a {@link Retrofit} REST client,
-     * configuring it on the base of the given {@param baseUrl}
+     * configuring it on the base of the given base url
      *
-     * @return a {@link Retrofit} REST client based on the given {@param baseUrl} or {@code null} if an incorrect
-     * {@param baseUrl} was indicated
-     * @throws ExecutionException,
+     * @param baseUrl,
+     *         the base url to use
+     * @return a {@link Retrofit} REST client based on the given base url or {@code null} if an incorrect base url was
+     * indicated
+     * @throws ExecutionException
      *         if an error was thrown while loading the value
      */
     public static Retrofit getRestClient(String baseUrl) throws ExecutionException {

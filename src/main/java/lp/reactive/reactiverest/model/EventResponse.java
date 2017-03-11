@@ -30,7 +30,7 @@ public class EventResponse {
 
     /**
      * Construct a new {@link EventResponse} on the base of the given
-     * {@param httpResponse}
+     * http response
      *
      * @param identifier,
      *         the event unique identifier
@@ -45,7 +45,7 @@ public class EventResponse {
 
     /**
      * Construct a new {@link EventResponse} on the base of the given
-     * {@param httpError}
+     * http error
      *
      * @param identifier,
      *         the event unique identifier

@@ -104,6 +104,8 @@ public class CoordinatorService {
     /**
      * Check if the received event response correspond to the expected event
      *
+     * @param receivedEvent,
+     *         the received event to check
      * @param expectedIdentifier,
      *         the identifier of the expected event
      * @return a boolean indicating if the received event response correspond to the expected event or not

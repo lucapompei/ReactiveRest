@@ -4,7 +4,7 @@
 
     <groupId>lp.reactive</groupId>
     <artifactId>ReactiveRest</artifactId>
-    <version>1.0</version>
+    <version>1.1</version>
     <packaging>jar</packaging>
 
     <name>ReactiveRest</name>
@@ -36,9 +36,9 @@
 
     <distributionManagement>
         <repository>
-            <id>bintray-lucapompei-ReactiveRest</id>
-            <name>lucapompei-ReactiveRest</name>
-            <url>https://api.bintray.com/maven/lucapompei/ReactiveRest/ReactiveRest/;publish=1</url>
+            <id>bintray-lucapompei-maven</id>
+            <name>lucapompei-maven</name>
+            <url>https://api.bintray.com/maven/lucapompei/maven/ReactiveRest/;publish=1</url>
         </repository>
     </distributionManagement>
 

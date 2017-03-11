@@ -34,9 +34,9 @@ public class RestService {
      * @param httpRequest,
      *         a prepared {@link HttpRequest} used for api call
      * @return the http response encapsulated into a {@link HttpResponse} or {@code null} is some error occurs
-     * @throws ExecutionException,
+     * @throws ExecutionException
      *         if a problem occurred during the retrieving of REST client
-     * @throws IOException,
+     * @throws IOException
      *         if a problem occurred talking to the server
      */
     public static HttpResponse callSync(HttpRequest httpRequest) throws ExecutionException, IOException {
@@ -57,10 +57,13 @@ public class RestService {
      *
      * @param httpRequest,
      *         a prepared {@link HttpRequest} used for api call
-     * @return the http response encapsulated into a {@link HttpResponse} or {@code null} is some error occurs
-     * @throws ExecutionException,
+     * @param consumerOnSuccess,
+     *         the consumer used to handle success response
+     * @param consumerOnError,
+     *         the consumer used to handle error response
+     * @throws ExecutionException
      *         if a problem occurred during the retrieving of REST client
-     * @throws IOException,
+     * @throws IOException
      *         if a problem occurred talking to the server
      */
     public static void callAsync(HttpRequest httpRequest, Consumer<HttpResponse> consumerOnSuccess,
@@ -94,9 +97,9 @@ public class RestService {
      * @param httpRequest,
      *         a prepared {@link HttpRequest} used for api call
      * @return the {@link Call<Object>} object used for execute REST communications or {@code null} is some error occurs
-     * @throws ExecutionException,
+     * @throws ExecutionException
      *         if a problem occurred during the retrieving of REST client
-     * @throws IOException,
+     * @throws IOException
      *         if a problem occurred talking to the server
      */
     private static Call<Object> prepareCall(HttpRequest httpRequest) throws ExecutionException, IOException {

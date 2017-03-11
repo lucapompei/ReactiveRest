@@ -30,9 +30,9 @@ public class AsyncAPI {
      *         a prepared {@link HttpRequest} used for api call
      * @param consumerOnSuccess,
      *         the consumer of asynchronous executing
-     * @throws ExecutionException,
+     * @throws ExecutionException
      *         if a problem occurred during the retrieving of REST client
-     * @throws IOException,
+     * @throws IOException
      *         if a problem occurred talking to the server
      */
     public static void call(HttpRequest httpRequest, Consumer<HttpResponse> consumerOnSuccess) throws
@@ -52,9 +52,9 @@ public class AsyncAPI {
      *         the consumer of asynchronous executing
      * @param consumerOnError,
      *         the consumer of possible asynchronous errors
-     * @throws ExecutionException,
+     * @throws ExecutionException
      *         if a problem occurred during the retrieving of REST client
-     * @throws IOException,
+     * @throws IOException
      *         if a problem occurred talking to the server
      */
     public static void call(HttpRequest httpRequest, Consumer<HttpResponse> consumerOnSuccess, Consumer<Throwable>

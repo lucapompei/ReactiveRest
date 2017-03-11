@@ -51,11 +51,11 @@ public class JsonUtils {
     }
 
     /**
-     * Convert the given {@param object} to a json string
+     * Convert the given object to a json string
      *
      * @param object,
      *         the object to be converted into a json string
-     * @return a json string representation of the given {@param object} or {@code null} if some exception occurs during
+     * @return a json string representation of the given object or {@code null} if some exception occurs during
      * conversion
      */
     public static String toJson(Object object) {
@@ -68,8 +68,10 @@ public class JsonUtils {
     }
 
     /**
-     * Convert the given {@param json} string to its represented object
+     * Convert the given json string to its represented object
      *
+     * @param <T>,
+     *         generic type
      * @param json,
      *         the json string from which re-create the represented object
      * @param cls,

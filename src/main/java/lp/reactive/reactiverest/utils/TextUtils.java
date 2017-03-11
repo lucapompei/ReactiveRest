@@ -8,7 +8,7 @@ package lp.reactive.reactiverest.utils;
 public class TextUtils {
 
     /**
-     * This method checks if the passed {@param value} is {@code null} or empty
+     * This method checks if the passed value is {@code null} or empty
      *
      * @param value,
      *         the string value to check
@@ -19,7 +19,7 @@ public class TextUtils {
     }
 
     /**
-     * This method add missing http protocol to the given {@param baseUrl}
+     * This method add missing http protocol to the given base url
      *
      * @param baseUrl,
      *         the base url to check
