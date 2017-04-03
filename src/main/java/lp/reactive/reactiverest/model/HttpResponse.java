@@ -68,6 +68,15 @@ public class HttpResponse {
     }
 
     /**
+     * Return a boolean indicating if the http response has been successful or not
+     *
+     * @return a boolean indicating if the http response has been successful or not
+     */
+    public boolean isSuccessful() {
+        return rawResponse.isSuccessful();
+    }
+
+    /**
      * Return a prepared string to represent the obtained response
      *
      * @return a prepared string to represent the obtained response
