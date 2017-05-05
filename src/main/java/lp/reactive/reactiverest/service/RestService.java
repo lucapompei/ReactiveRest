@@ -80,7 +80,10 @@ public class RestService {
         call.clone().enqueue(new Callback<Object>() {
             @Override
             public void onResponse(Call<Object> call, Response<Object> response) {
-                consumerOnSuccess.accept(prepareHttpResponse(response));
+            	HttpResponse httpResponse = prepareHttpResponse(response);
+            	if (httpResponse != null) {
+            		consumerOnSuccess.accept(httpResponse);
+            	}
             }
 
             @Override
@@ -200,11 +203,15 @@ public class RestService {
             try {
                 // obtaining http response
                 HttpResponse httpResponse = callSync(httpRequest);
-                // preparing the event response based on http response
-                EventResponse eventResponse = new EventResponse(eventIdentifier, httpResponse);
-                // dispatching event response on event bus
-                LOGGER.debug("Posting event response on event bus identifier by " + eventIdentifier);
-                coordinatorService.post(eventResponse);
+                if (httpRequest == null) {
+                	throw new Exception("HttpResponse is null");
+                } else {
+	                // preparing the event response based on http response
+	                EventResponse eventResponse = new EventResponse(eventIdentifier, httpResponse);
+	                // dispatching event response on event bus
+	                LOGGER.debug("Posting event response on event bus identifier by " + eventIdentifier);
+	                coordinatorService.post(eventResponse);
+                }
             } catch (Exception ex) {
                 // preparing the event response based on http error
                 EventResponse eventResponse = new EventResponse(eventIdentifier, ex);
