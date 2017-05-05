@@ -4,6 +4,8 @@ import lp.reactive.reactiverest.model.HttpRequest;
 import lp.reactive.reactiverest.model.HttpResponse;
 import lp.reactive.reactiverest.service.CoordinatorService;
 import lp.reactive.reactiverest.service.RestService;
+import lp.reactive.reactiverest.utils.TextUtils;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -32,8 +34,16 @@ public class EventAPI {
      *         the unique identifier to recognize the response event on event bus when it is emitted
      */
     public static void call(HttpRequest httpRequest, String eventIdentifier) {
-        LOGGER.debug("Reactive call to API with http request: " + httpRequest.toString());
-        RestService.callEvent(httpRequest, eventIdentifier, CoordinatorAPI.getCoordinator());
+    	if (httpRequest != null) {
+    		if (TextUtils.isNullOrEmpty(eventIdentifier)) {
+    			LOGGER.error("EventIdentifier must be not null");
+    		} else {
+		        LOGGER.debug("Reactive call to API with http request: " + httpRequest.toString());
+		        RestService.callEvent(httpRequest, eventIdentifier, CoordinatorAPI.getCoordinator());
+    		}
+    	} else {
+    		LOGGER.error("HttpRequest must not be null");
+    	}
     }
 
 }

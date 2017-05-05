@@ -34,8 +34,13 @@ public class SyncAPI {
      *         if a problem occurred talking to the server
      */
     public static HttpResponse call(HttpRequest httpRequest) throws ExecutionException, IOException {
-        LOGGER.debug("Synchronous call to API with http request: " + httpRequest.toString());
-        return RestService.callSync(httpRequest);
+    	if (httpRequest != null) {
+    		LOGGER.debug("Synchronous call to API with http request: " + httpRequest.toString());
+    		return RestService.callSync(httpRequest);
+    	} else {
+    		LOGGER.error("HttpRequest must not be null");
+    		return null;
+    	}
     }
 
 }

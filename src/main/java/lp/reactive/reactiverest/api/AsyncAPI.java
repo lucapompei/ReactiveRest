@@ -38,8 +38,12 @@ public class AsyncAPI {
     public static void call(HttpRequest httpRequest, Consumer<HttpResponse> consumerOnSuccess) throws
             ExecutionException,
             IOException {
-        LOGGER.debug("Asynchronous call to API with http request: " + httpRequest.toString());
-        RestService.callAsync(httpRequest, consumerOnSuccess, null);
+    	if (httpRequest != null) {
+	        LOGGER.debug("Asynchronous call to API with http request: " + httpRequest.toString());
+	        RestService.callAsync(httpRequest, consumerOnSuccess, null);
+    	} else {
+    		LOGGER.error("HttpRequest must not be null");
+    	}
     }
 
     /**
@@ -60,8 +64,12 @@ public class AsyncAPI {
     public static void call(HttpRequest httpRequest, Consumer<HttpResponse> consumerOnSuccess, Consumer<Throwable>
             consumerOnError) throws ExecutionException,
             IOException {
-        LOGGER.debug("Asynchronous call to API with http request: " + httpRequest.toString());
-        RestService.callAsync(httpRequest, consumerOnSuccess, consumerOnError);
+    	if (httpRequest != null) {
+	        LOGGER.debug("Asynchronous call to API with http request: " + httpRequest.toString());
+	        RestService.callAsync(httpRequest, consumerOnSuccess, consumerOnError);
+    	} else {
+    		LOGGER.error("HttpRequest must not be null");
+    	}
     }
 
 }

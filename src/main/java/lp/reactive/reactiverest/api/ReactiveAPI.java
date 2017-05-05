@@ -29,8 +29,16 @@ public class ReactiveAPI {
      *         the provided consumer that react to http response
      */
     public static void call(HttpRequest httpRequest, Consumer<HttpResponse> consumerOnSuccess) {
-        LOGGER.debug("Reactive call to API with http request: " + httpRequest.toString());
-        RestService.callReact(httpRequest, consumerOnSuccess, null);
+    	if (httpRequest != null) {
+    		if (consumerOnSuccess == null) {
+    			LOGGER.error("Consumer on success must not be null");
+    		} else {
+	    		LOGGER.debug("Reactive call to API with http request: " + httpRequest.toString());
+	    		RestService.callReact(httpRequest, consumerOnSuccess, null);
+    		}
+    	} else {
+    		LOGGER.error("HttpRequest must not be null");
+    	}
     }
 
     /**
@@ -46,8 +54,16 @@ public class ReactiveAPI {
      */
     public static void call(HttpRequest httpRequest, Consumer<HttpResponse> consumerOnSuccess, Consumer<Throwable>
             consumerOnError) {
-        LOGGER.debug("Reactive call to API with http request: " + httpRequest.toString());
-        RestService.callReact(httpRequest, consumerOnSuccess, consumerOnError);
+    	if (httpRequest != null) {
+    		if (consumerOnSuccess == null) {
+    			LOGGER.error("Consumer on success must not be null");
+    		} else {
+	    		LOGGER.debug("Reactive call to API with http request: " + httpRequest.toString());
+	    		RestService.callReact(httpRequest, consumerOnSuccess, consumerOnError);
+    		}
+    	} else {
+    		LOGGER.error("HttpRequest must not be null");
+    	}
     }
 
 }

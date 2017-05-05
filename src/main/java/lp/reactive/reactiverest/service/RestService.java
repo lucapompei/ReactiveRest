@@ -2,6 +2,7 @@ package lp.reactive.reactiverest.service;
 
 import io.reactivex.Flowable;
 import lp.reactive.reactiverest.model.*;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import retrofit2.Call;
@@ -154,10 +155,14 @@ public class RestService {
      * @return a {@link HttpResponse}
      */
     private static HttpResponse prepareHttpResponse(Response<Object> rawResponse) {
-        // make synchronous request and get http response
-        HttpResponse httpResponse = new HttpResponse(rawResponse);
-        LOGGER.debug("Response obtained with http status code: " + httpResponse.getStatusCode());
-        return httpResponse;
+        if (rawResponse == null) {
+        	LOGGER.debug("The raw response is null");
+        	return null;
+        } else {
+	        HttpResponse httpResponse = new HttpResponse(rawResponse);
+	        LOGGER.debug("Response obtained with http status code: " + httpResponse.getStatusCode());
+	        return httpResponse;
+        }
     }
 
     /**
@@ -172,7 +177,7 @@ public class RestService {
      */
     public static void callEvent(HttpRequest httpRequest, String eventIdentifier, CoordinatorService
             coordinatorService) {
-        // prepare and dispatch event response on event bus
+	    // prepare and dispatch event response on event bus
         RestService.prepareAndDispatchEvent(httpRequest, eventIdentifier, coordinatorService);
     }
 
