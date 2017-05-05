@@ -1,10 +1,18 @@
 package lp.reactive.reactiverest.model;
 
-import io.reactivex.annotations.Nullable;
-import retrofit2.Call;
-import retrofit2.http.*;
-
 import java.util.Map;
+
+import io.reactivex.annotations.Nullable;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.http.Body;
+import retrofit2.http.DELETE;
+import retrofit2.http.GET;
+import retrofit2.http.HeaderMap;
+import retrofit2.http.POST;
+import retrofit2.http.PUT;
+import retrofit2.http.Path;
+import retrofit2.http.QueryMap;
 
 /**
  * This generic interface is to use to require to implement the most general
@@ -27,7 +35,7 @@ public interface HttpCall {
      * @return the obtained response from the http {@link GET} request
      */
     @GET(value = "{apiEndpoint}")
-    Call<Object> makeGET(@Path(value = "apiEndpoint", encoded = true) String apiEndpoint, @Nullable @HeaderMap
+    Call<ResponseBody> makeGET(@Path(value = "apiEndpoint", encoded = true) String apiEndpoint, @Nullable @HeaderMap
             Map<String, String> headers, @Nullable @QueryMap Map<String, String> queryParams);
 
     /**
@@ -45,7 +53,7 @@ public interface HttpCall {
      * @return the obtained response from the http {@link POST} request
      */
     @POST(value = "{apiEndpoint}")
-    Call<Object> makePOST(@Path(value = "apiEndpoint", encoded = true) String apiEndpoint, @Nullable @HeaderMap
+    Call<ResponseBody> makePOST(@Path(value = "apiEndpoint", encoded = true) String apiEndpoint, @Nullable @HeaderMap
             Map<String, String> headers, @Nullable @QueryMap Map<String, String> queryParams, @Nullable @Body
                                   Map<String, String> bodyParams);
 
@@ -64,7 +72,7 @@ public interface HttpCall {
      * @return the obtained response from the http {@link PUT} request
      */
     @PUT(value = "{apiEndpoint}")
-    Call<Object> makePUT(@Path(value = "apiEndpoint", encoded = true) String apiEndpoint, @Nullable @HeaderMap
+    Call<ResponseBody> makePUT(@Path(value = "apiEndpoint", encoded = true) String apiEndpoint, @Nullable @HeaderMap
             Map<String, String> headers, @Nullable @QueryMap Map<String, String> queryParams, @Nullable @Body
                                  Map<String, String> bodyParams);
 
@@ -83,7 +91,7 @@ public interface HttpCall {
      * @return the obtained response from the http {@link DELETE} request
      */
     @DELETE(value = "{apiEndpoint}")
-    Call<Object> makeDELETE(@Path(value = "apiEndpoint", encoded = true) String apiEndpoint, @Nullable @HeaderMap
+    Call<ResponseBody> makeDELETE(@Path(value = "apiEndpoint", encoded = true) String apiEndpoint, @Nullable @HeaderMap
             Map<String, String> headers, @Nullable @QueryMap Map<String, String> queryParams, @Nullable @Body
                                     Map<String, String> bodyParams);
 

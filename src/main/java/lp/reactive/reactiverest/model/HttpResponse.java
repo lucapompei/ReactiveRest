@@ -1,6 +1,7 @@
 package lp.reactive.reactiverest.model;
 
 import lp.reactive.reactiverest.utils.JsonUtils;
+import okhttp3.ResponseBody;
 import retrofit2.Response;
 
 /**
@@ -13,7 +14,7 @@ public class HttpResponse {
     /**
      * The raw response obtained from http request
      */
-    private Response<Object> rawResponse;
+    private Response<ResponseBody> rawResponse;
 
     /**
      * Construct a {@link HttpResponse} using the raw response obtained from
@@ -22,7 +23,7 @@ public class HttpResponse {
      * @param rawResponse,
      *         the raw response obtained from http request
      */
-    public HttpResponse(Response<Object> rawResponse) {
+    public HttpResponse(Response<ResponseBody> rawResponse) {
         this.rawResponse = rawResponse;
     }
 
@@ -31,7 +32,7 @@ public class HttpResponse {
      *
      * @return the raw response obtained from http request
      */
-    public Response<Object> getRawResponse() {
+    public Response<ResponseBody> getRawResponse() {
         return this.rawResponse;
     }
 
