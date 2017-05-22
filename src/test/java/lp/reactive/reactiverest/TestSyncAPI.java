@@ -42,8 +42,7 @@ public class TestSyncAPI {
         System.out.println("Testing basic SyncAPI call");
         // prepare http request
         HttpRequest httpRequest = new HttpRequest.
-                Builder("https://slack.com/api/", "channels.info")
-                .queryString("token=xoxp-5181168474-15653316390-186320659061-c1c4d1e0ac309237bdb757357c1dff7e&channel=C4D70CZA7&pretty=1")
+                Builder(BASE_URL, API_ENDPOINT)
                 .build();
         System.out.println(httpRequest.toString());
         // execute api call and getting http response
