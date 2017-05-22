@@ -129,6 +129,18 @@ public class RestService {
 		Map<String, String> headers = httpRequest.getHeaders() == null ? new HashMap<>() : httpRequest.getHeaders();
 		Map<String, String> queryParams = httpRequest.getQueryParams() == null ? new HashMap<>()
 				: httpRequest.getQueryParams();
+		String queryString = httpRequest.getQueryString() == null ? null : httpRequest.getQueryString();
+		if (queryString != null) {
+			String queryStringSplitted[] = queryString.split("&");
+			int index = 0;
+			int sizeList = queryStringSplitted.length;
+			for (; index < sizeList; index++) {
+				String stringValues[] = queryStringSplitted[index].split("=");
+				if (stringValues.length == 2) {
+					queryParams.put(stringValues[0], stringValues[1]);
+				}
+			}
+		}
 		Map<String, String> bodyParams = httpRequest.getBodyParams() == null ? new HashMap<>()
 				: httpRequest.getBodyParams();
 		// initialize the call
