@@ -32,13 +32,16 @@ public class TestEventAPI {
     private static final Map<String, String> HEADERS = ImmutableMap.of("AUTH_TOKEN", "1234567");
     private static final Map<String, String> QUERY_PARAMS = ImmutableMap.of("sort", "desc");
     private static final Map<String, String> BODY_PARAMS = ImmutableMap.of("code", "first");
+    private static final int MAXIMUM_ATTEMPTS = 3;
 
     public static void main(String[] argv) {
         TestEventAPI.testBasicEventAPI();
+        TestEventAPI.testBasicEventAPIWithRetry();
         TestEventAPI.testEventAPIWithOptionalParams();
     }
 
     private static TestEventAPI getInstance() {
+    	// Used for test scope
         return new TestEventAPI();
     }
 
@@ -53,6 +56,19 @@ public class TestEventAPI {
         CoordinatorAPI.getCoordinator().register(getInstance());
         // execute api call and getting http response
         EventAPI.call(httpRequest, EVENT_IDENTIFIER);
+    }
+    
+    public static void testBasicEventAPIWithRetry() {
+        System.out.println("Testing basic EventAPI call with http request with retry option");
+        // prepare http request
+        HttpRequest httpRequest = new HttpRequest.
+                Builder(BASE_URL, API_ENDPOINT)
+                .build();
+        System.out.println(httpRequest.toString());
+        // register class to event bus through the coordinator API
+        CoordinatorAPI.getCoordinator().register(getInstance());
+        // execute api call and getting http response
+        EventAPI.call(httpRequest, EVENT_IDENTIFIER, MAXIMUM_ATTEMPTS);
     }
 
     public static void testEventAPIWithOptionalParams() {

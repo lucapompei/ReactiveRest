@@ -32,9 +32,11 @@ public class TestSyncAPI {
     private static final Map<String, String> HEADERS = ImmutableMap.of("AUTH_TOKEN", "1234567");
     private static final Map<String, String> QUERY_PARAMS = ImmutableMap.of("sort", "desc");
     private static final Map<String, String> BODY_PARAMS = ImmutableMap.of("code", "first");
+    private static final int MAXIMUM_ATTEMPTS = 3;
 
     public static void main(String[] argv) throws IOException, ExecutionException {
         TestSyncAPI.testBasicSyncAPI();
+        TestSyncAPI.testBasicSyncAPIWithRetry();
         TestSyncAPI.testSyncAPIWithOptionalParams();
     }
 
@@ -47,6 +49,20 @@ public class TestSyncAPI {
         System.out.println(httpRequest.toString());
         // execute api call and getting http response
         HttpResponse httpResponse = SyncAPI.call(httpRequest);
+        if (httpRequest != null) {
+        	System.out.println(httpResponse.toString());
+        }
+    }
+    
+    public static void testBasicSyncAPIWithRetry() throws ExecutionException, IOException {
+        System.out.println("Testing basic SyncAPI call with retry option");
+        // prepare http request
+        HttpRequest httpRequest = new HttpRequest.
+                Builder(BASE_URL, API_ENDPOINT)
+                .build();
+        System.out.println(httpRequest.toString());
+        // execute api call and getting http response
+        HttpResponse httpResponse = SyncAPI.call(httpRequest, MAXIMUM_ATTEMPTS);
         if (httpRequest != null) {
         	System.out.println(httpResponse.toString());
         }

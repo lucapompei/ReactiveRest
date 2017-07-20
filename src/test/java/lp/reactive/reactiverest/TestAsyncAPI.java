@@ -32,10 +32,13 @@ public class TestAsyncAPI {
     private static final Map<String, String> HEADERS = ImmutableMap.of("AUTH_TOKEN", "1234567");
     private static final Map<String, String> QUERY_PARAMS = ImmutableMap.of("sort", "desc");
     private static final Map<String, String> BODY_PARAMS = ImmutableMap.of("code", "first");
+    private static final int MAXIMUM_ATTEMPTS = 3;
 
     public static void main(String[] argv) throws IOException, ExecutionException {
         TestAsyncAPI.testBasicAsyncAPI();
+        TestAsyncAPI.testBasicAsyncAPIWithRetry();
         TestAsyncAPI.testBasicAsyncAPIHandlingErrors();
+        TestAsyncAPI.testBasicAsyncAPIHandlingErrorsWithRetry();
         TestAsyncAPI.testAsyncAPIWithOptionalParams();
         TestAsyncAPI.testAsyncAPIWithOptionalParamsHandlingErrors();
     }
@@ -58,6 +61,17 @@ public class TestAsyncAPI {
         // execute api call and getting http response
         AsyncAPI.call(httpRequest, consumerOnSuccess);
     }
+    
+    public static void testBasicAsyncAPIWithRetry() throws ExecutionException, IOException {
+        System.out.println("Testing basic AsyncAPI call with retry option");
+        // prepare http request
+        HttpRequest httpRequest = new HttpRequest.
+                Builder(BASE_URL, API_ENDPOINT)
+                .build();
+        System.out.println(httpRequest.toString());
+        // execute api call and getting http response
+        AsyncAPI.call(httpRequest, consumerOnSuccess, MAXIMUM_ATTEMPTS);
+    }
 
     public static void testBasicAsyncAPIHandlingErrors() throws ExecutionException, IOException {
         System.out.println("Testing basic AsyncAPI call handling errors");
@@ -68,6 +82,17 @@ public class TestAsyncAPI {
         System.out.println(httpRequest.toString());
         // execute api call and getting http response
         AsyncAPI.call(httpRequest, consumerOnSuccess, consumerOnError);
+    }
+    
+    public static void testBasicAsyncAPIHandlingErrorsWithRetry() throws ExecutionException, IOException {
+        System.out.println("Testing basic AsyncAPI call handling errors with retry option");
+        // prepare http request
+        HttpRequest httpRequest = new HttpRequest.
+                Builder(BASE_URL, API_ENDPOINT)
+                .build();
+        System.out.println(httpRequest.toString());
+        // execute api call and getting http response
+        AsyncAPI.call(httpRequest, consumerOnSuccess, consumerOnError, MAXIMUM_ATTEMPTS);
     }
 
     public static void testAsyncAPIWithOptionalParams() throws ExecutionException, IOException {

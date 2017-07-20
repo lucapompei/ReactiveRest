@@ -13,7 +13,7 @@ Using this library, you can make 4 different types of HTTP REST communications:
     
 4) <strong>Reactive HTTP request:</strong> based on Reactive programming paradigm, each HTTP response is asynchronously prepared, taking the advantage of using Observable, so that each Observer interested and subscribed to it, can obtain the response when it is processed.
 
-The Reactive REST client supports GET, POST, PUT and DELETE HTTP method.
+The Reactive REST client supports GET, POST, PUT and DELETE HTTP method and lets you indicate the maximum number of attempts to use to repeat an api call if an error occurs.
 
 API Usage
 --------
@@ -58,7 +58,11 @@ HttpRequest httpRequest = new HttpRequest.
 - SyncAPI:
 
     ```java
+    // Call Api
     HttpResponse httpResponse = SyncAPI.call(httpRequest);
+    
+    // Call API specifying the maximum attempts to use if an error occurs
+    HttpResponse httpResponse = SyncAPI.call(httpRequest, 3);
     ```
 
 - AsyncAPI:
@@ -71,9 +75,15 @@ HttpRequest httpRequest = new HttpRequest.
         
     // Call API
     AsyncAPI.call(httpRequest, consumerOnSuccess);
+    
+    // Call API specifying the maximum attempts to use if an error occurs
+    AsyncAPI.call(httpRequest, consumerOnSuccess, 3);    
         
     // Call API handling error
     AsyncAPI.call(httpRequest, consumerOnSuccess, consumerOnError);
+    
+    // Call API handling error and specifying the maximum attempts to use if an error occurs
+    AsyncAPI.call(httpRequest, consumerOnSuccess, consumerOnError, 3);
     ```
 
 - EventAPI:
@@ -87,6 +97,9 @@ HttpRequest httpRequest = new HttpRequest.
         
     // Call API
     EventAPI.call(httpRequest, EVENT_IDENTIFIER);
+    
+    // Call API specifying the maximum attempts to use if an error occurs
+    EventAPI.call(httpRequest, EVENT_IDENTIFIER, 3);
             
     // Subscribe a method to handle HTTP response
     @Subscribe
@@ -113,9 +126,15 @@ HttpRequest httpRequest = new HttpRequest.
         
     // Call API
     ReactiveAPI.call(httpRequest, consumerOnSuccess);
+    
+    // Call API specifying the maximum attempts to use if an error occurs
+    ReactiveAPI.call(httpRequest, consumerOnSuccess, 3);
         
     // Call API handling error
     ReactiveAPI.call(httpRequest, consumerOnSuccess, consumerOnError);
+    
+    // Call API handling error and specifying the maximum attempts to use if an error occursù
+    ReactiveAPI.call(httpRequest, consumerOnSuccess, consumerOnError, 3);
     ```
 
 For a better comprehension of ReactiveRest, some test classes are provided.
@@ -131,14 +150,14 @@ You can also depend on the .jar through Maven:
 <dependency>
   <groupId>lp.reactive</groupId>
   <artifactId>ReactiveRest</artifactId>
-  <version>1.6</version>
+  <version>1.7</version>
 </dependency>
 ```
 
 or Gradle:
 
 ```groovy
-compile "lp.reactive:ReactiveRest:1.6"
+compile "lp.reactive:ReactiveRest:1.7"
 ```
 
 

@@ -30,6 +30,7 @@ public class TestReactiveAPI {
     private static final Map<String, String> HEADERS = ImmutableMap.of("AUTH_TOKEN", "1234567");
     private static final Map<String, String> QUERY_PARAMS = ImmutableMap.of("sort", "desc");
     private static final Map<String, String> BODY_PARAMS = ImmutableMap.of("code", "first");
+    private static final int MAXIMUM_ATTEMPTS = 3;
 
     /**
      * Consumers (onSuccess and onError)
@@ -40,7 +41,9 @@ public class TestReactiveAPI {
 
     public static void main(String[] argv) {
         TestReactiveAPI.testBasicReactiveAPI();
+        TestReactiveAPI.testBasicReactiveAPIWithRetry();
         TestReactiveAPI.testBasicReactiveAPIHandlingErrors();
+        TestReactiveAPI.testBasicReactiveAPIHandlingErrorsWithRetry();
         TestReactiveAPI.testSyncAPIWithOptionalParams();
         TestReactiveAPI.testSyncAPIWithOptionalParamsHandlingErrors();
     }
@@ -55,6 +58,17 @@ public class TestReactiveAPI {
         // execute api call for getting http response
         ReactiveAPI.call(httpRequest, consumerOnSuccess);
     }
+    
+    public static void testBasicReactiveAPIWithRetry() {
+        System.out.println("Testing basic ReactiveAPI call with retry option");
+        // prepare http request
+        HttpRequest httpRequest = new HttpRequest.
+                Builder(BASE_URL, API_ENDPOINT)
+                .build();
+        System.out.println(httpRequest.toString());
+        // execute api call for getting http response
+        ReactiveAPI.call(httpRequest, consumerOnSuccess, MAXIMUM_ATTEMPTS);
+    }
 
     public static void testBasicReactiveAPIHandlingErrors() {
         System.out.println("Testing basic ReactiveAPI call handling errors");
@@ -65,6 +79,17 @@ public class TestReactiveAPI {
         System.out.println(httpRequest.toString());
         // execute api call for getting http response
         ReactiveAPI.call(httpRequest, consumerOnSuccess, consumerOnError);
+    }
+    
+    public static void testBasicReactiveAPIHandlingErrorsWithRetry() {
+        System.out.println("Testing basic ReactiveAPI call handling errors with retry option");
+        // prepare http request
+        HttpRequest httpRequest = new HttpRequest.
+                Builder(BASE_URL, API_ENDPOINT)
+                .build();
+        System.out.println(httpRequest.toString());
+        // execute api call for getting http response
+        ReactiveAPI.call(httpRequest, consumerOnSuccess, consumerOnError, MAXIMUM_ATTEMPTS);
     }
 
     public static void testSyncAPIWithOptionalParams() {

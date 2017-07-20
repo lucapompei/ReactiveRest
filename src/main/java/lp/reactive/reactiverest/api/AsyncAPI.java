@@ -17,59 +17,113 @@ import java.util.function.Consumer;
  */
 public class AsyncAPI {
 
-    /**
-     * Logger
-     */
-    private static final Logger LOGGER = LogManager.getFormatterLogger(AsyncAPI.class);
+	/**
+	 * Logger
+	 */
+	private static final Logger LOGGER = LogManager.getFormatterLogger(AsyncAPI.class);
 
-    /**
-     * This API is used to formulate an asynchronous api call on the base of the
-     * given parameters and return a {@link HttpResponse}
-     *
-     * @param httpRequest,
-     *         a prepared {@link HttpRequest} used for api call
-     * @param consumerOnSuccess,
-     *         the consumer of asynchronous executing
-     * @throws ExecutionException
-     *         if a problem occurred during the retrieving of REST client
-     * @throws IOException
-     *         if a problem occurred talking to the server
-     */
-    public static void call(HttpRequest httpRequest, Consumer<HttpResponse> consumerOnSuccess) throws
-            ExecutionException,
-            IOException {
-    	if (httpRequest != null) {
-	        LOGGER.debug("Asynchronous call to API with http request: " + httpRequest.toString());
-	        RestService.callAsync(httpRequest, consumerOnSuccess, null);
-    	} else {
-    		LOGGER.error("HttpRequest must not be null");
-    	}
-    }
+	/**
+	 * This API is used to formulate an asynchronous api call on the base of the
+	 * given parameters and return a {@link HttpResponse}
+	 *
+	 * @param httpRequest,
+	 *            a prepared {@link HttpRequest} used for api call
+	 * @param consumerOnSuccess,
+	 *            the consumer of asynchronous executing
+	 * @throws ExecutionException
+	 *             if a problem occurred during the retrieving of REST client
+	 * @throws IOException
+	 *             if a problem occurred talking to the server
+	 */
+	public static void call(HttpRequest httpRequest, Consumer<HttpResponse> consumerOnSuccess)
+			throws ExecutionException, IOException {
+		if (httpRequest != null) {
+			LOGGER.debug("Asynchronous call to API with http request: " + httpRequest.toString());
+			RestService.callAsync(httpRequest, consumerOnSuccess, null, 1);
+		} else {
+			LOGGER.error("HttpRequest must not be null");
+		}
+	}
 
-    /**
-     * This API is used to formulate an asynchronous api call on the base of the
-     * given parameters and return a {@link HttpResponse}
-     *
-     * @param httpRequest,
-     *         a prepared {@link HttpRequest} used for api call
-     * @param consumerOnSuccess,
-     *         the consumer of asynchronous executing
-     * @param consumerOnError,
-     *         the consumer of possible asynchronous errors
-     * @throws ExecutionException
-     *         if a problem occurred during the retrieving of REST client
-     * @throws IOException
-     *         if a problem occurred talking to the server
-     */
-    public static void call(HttpRequest httpRequest, Consumer<HttpResponse> consumerOnSuccess, Consumer<Throwable>
-            consumerOnError) throws ExecutionException,
-            IOException {
-    	if (httpRequest != null) {
-	        LOGGER.debug("Asynchronous call to API with http request: " + httpRequest.toString());
-	        RestService.callAsync(httpRequest, consumerOnSuccess, consumerOnError);
-    	} else {
-    		LOGGER.error("HttpRequest must not be null");
-    	}
-    }
+	/**
+	 * This API is used to formulate an asynchronous api call on the base of the
+	 * given parameters, specifying a maximum number of attempts to use if an error
+	 * occurs, and return a {@link HttpResponse}
+	 *
+	 * @param httpRequest,
+	 *            a prepared {@link HttpRequest} used for api call
+	 * @param consumerOnSuccess,
+	 *            the consumer of asynchronous executing
+	 * @param attempts,
+	 *            the number of attempts to test if an error occurs during the api
+	 *            call
+	 * @throws ExecutionException
+	 *             if a problem occurred during the retrieving of REST client
+	 * @throws IOException
+	 *             if a problem occurred talking to the server
+	 */
+	public static void call(HttpRequest httpRequest, Consumer<HttpResponse> consumerOnSuccess, int attempts)
+			throws ExecutionException, IOException {
+		if (httpRequest != null) {
+			LOGGER.debug("Asynchronous call to API with http request: " + httpRequest.toString());
+			RestService.callAsync(httpRequest, consumerOnSuccess, null, attempts);
+		} else {
+			LOGGER.error("HttpRequest must not be null");
+		}
+	}
+
+	/**
+	 * This API is used to formulate an asynchronous api call on the base of the
+	 * given parameters and return a {@link HttpResponse}
+	 *
+	 * @param httpRequest,
+	 *            a prepared {@link HttpRequest} used for api call
+	 * @param consumerOnSuccess,
+	 *            the consumer of asynchronous executing
+	 * @param consumerOnError,
+	 *            the consumer of possible asynchronous errors
+	 * @throws ExecutionException
+	 *             if a problem occurred during the retrieving of REST client
+	 * @throws IOException
+	 *             if a problem occurred talking to the server
+	 */
+	public static void call(HttpRequest httpRequest, Consumer<HttpResponse> consumerOnSuccess,
+			Consumer<Throwable> consumerOnError) throws ExecutionException, IOException {
+		if (httpRequest != null) {
+			LOGGER.debug("Asynchronous call to API with http request: " + httpRequest.toString());
+			RestService.callAsync(httpRequest, consumerOnSuccess, consumerOnError, 1);
+		} else {
+			LOGGER.error("HttpRequest must not be null");
+		}
+	}
+
+	/**
+	 * This API is used to formulate an asynchronous api call on the base of the
+	 * given parameters, specifying a maximum number of attempts to use if an error
+	 * occurs, and return a {@link HttpResponse}
+	 *
+	 * @param httpRequest,
+	 *            a prepared {@link HttpRequest} used for api call
+	 * @param consumerOnSuccess,
+	 *            the consumer of asynchronous executing
+	 * @param consumerOnError,
+	 *            the consumer of possible asynchronous errors
+	 * @param attempts,
+	 *            the number of attempts to test if an error occurs during the api
+	 *            call
+	 * @throws ExecutionException
+	 *             if a problem occurred during the retrieving of REST client
+	 * @throws IOException
+	 *             if a problem occurred talking to the server
+	 */
+	public static void call(HttpRequest httpRequest, Consumer<HttpResponse> consumerOnSuccess,
+			Consumer<Throwable> consumerOnError, int attempts) throws ExecutionException, IOException {
+		if (httpRequest != null) {
+			LOGGER.debug("Asynchronous call to API with http request: " + httpRequest.toString());
+			RestService.callAsync(httpRequest, consumerOnSuccess, consumerOnError, attempts);
+		} else {
+			LOGGER.error("HttpRequest must not be null");
+		}
+	}
 
 }
