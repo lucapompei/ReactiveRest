@@ -133,7 +133,7 @@ HttpRequest httpRequest = new HttpRequest.
     // Call API handling error
     ReactiveAPI.call(httpRequest, consumerOnSuccess, consumerOnError);
     
-    // Call API handling error and specifying the maximum attempts to use if an error occursù
+    // Call API handling error and specifying the maximum attempts to use if an error occurs
     ReactiveAPI.call(httpRequest, consumerOnSuccess, consumerOnError, 3);
     ```
 
