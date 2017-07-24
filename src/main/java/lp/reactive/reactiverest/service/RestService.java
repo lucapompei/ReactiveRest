@@ -74,6 +74,7 @@ public class RestService {
 				Thread.sleep(2000);
 			} catch (InterruptedException e) {
 				// Unhandled exception
+				Thread.currentThread().interrupt();
 			}
 			rawResponse = call.clone().execute();
 		}
@@ -151,6 +152,7 @@ public class RestService {
 						Thread.sleep(2000);
 					} catch (InterruptedException e) {
 						// Unhandled exception
+						Thread.currentThread().interrupt();
 					}
 					enqueueCall(call, consumerOnSuccess, consumerOnError, remainingAttempts);
 				} else {
