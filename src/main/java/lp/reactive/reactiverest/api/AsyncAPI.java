@@ -1,14 +1,15 @@
 package lp.reactive.reactiverest.api;
 
-import lp.reactive.reactiverest.model.HttpRequest;
-import lp.reactive.reactiverest.model.HttpResponse;
-import lp.reactive.reactiverest.service.RestService;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import java.io.IOException;
 import java.util.concurrent.ExecutionException;
 import java.util.function.Consumer;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import lp.reactive.reactiverest.model.HttpRequest;
+import lp.reactive.reactiverest.model.HttpResponse;
+import lp.reactive.reactiverest.service.RestService;
 
 /**
  * This class exposes the API to handle asynchronous REST communications
@@ -21,6 +22,13 @@ public class AsyncAPI {
 	 * Logger
 	 */
 	private static final Logger LOGGER = LogManager.getFormatterLogger(AsyncAPI.class);
+
+	/**
+	 * Private constructor for an utility class, construct a new {@code AsyncAPI}
+	 */
+	private AsyncAPI() {
+		// Empty implementation
+	}
 
 	/**
 	 * This API is used to formulate an asynchronous api call on the base of the

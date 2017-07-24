@@ -1,13 +1,13 @@
 package lp.reactive.reactiverest.api;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import lp.reactive.reactiverest.model.HttpRequest;
 import lp.reactive.reactiverest.model.HttpResponse;
 import lp.reactive.reactiverest.service.CoordinatorService;
 import lp.reactive.reactiverest.service.RestService;
 import lp.reactive.reactiverest.utils.TextUtils;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 /**
  * This class exposes the API to handle event based REST communications using a
@@ -24,6 +24,13 @@ public class EventAPI {
 	 */
 	private static final Logger LOGGER = LogManager.getFormatterLogger(EventAPI.class);
 
+	/**
+	 * Private constructor for an utility class, construct a new {@code EventAPI}
+	 */
+	private EventAPI() {
+		// Empty implementation
+	}
+	
 	/**
 	 * This API is used to formulate a reactive api call on the base of the given
 	 * parameters and return a {@link HttpResponse}

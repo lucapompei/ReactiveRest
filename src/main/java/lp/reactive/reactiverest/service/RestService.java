@@ -34,6 +34,13 @@ public class RestService {
 	private static final Logger LOGGER = LogManager.getFormatterLogger(RestService.class);
 
 	/**
+	 * Private constructor for an utility class, construct a new {@code RestService}
+	 */
+	private RestService() {
+		// Empty implementation
+	}
+
+	/**
 	 * This method is used to formulate a synchronous api call on the base of the
 	 * given parameters and return a {@link HttpResponse}
 	 *
@@ -60,7 +67,8 @@ public class RestService {
 		Response<ResponseBody> rawResponse = call.execute();
 		while (attempts > 1 && !rawResponse.isSuccessful()) {
 			attempts--;
-			LOGGER.error("Received " + rawResponse.code() + ", waiting 2 seconds for retry... (remaining " + attempts + " attempts)");
+			LOGGER.error("Received " + rawResponse.code() + ", waiting 2 seconds for retry... (remaining " + attempts
+					+ " attempts)");
 			try {
 				Thread.sleep(2000);
 			} catch (InterruptedException e) {
@@ -136,7 +144,8 @@ public class RestService {
 				LOGGER.error("Error during executing asynchronous api call", t);
 				if (attempts > 1) {
 					int newAttempts = attempts - 1;
-					LOGGER.error("Received " + t.getMessage() + ", waiting 2 seconds for retry... (remaining " + attempts + " attempts)");
+					LOGGER.error("Received " + t.getMessage() + ", waiting 2 seconds for retry... (remaining "
+							+ attempts + " attempts)");
 					try {
 						Thread.sleep(2000);
 					} catch (InterruptedException e) {

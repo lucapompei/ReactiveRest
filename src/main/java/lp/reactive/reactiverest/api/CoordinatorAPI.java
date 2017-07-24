@@ -1,8 +1,9 @@
 package lp.reactive.reactiverest.api;
 
-import lp.reactive.reactiverest.service.CoordinatorService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import lp.reactive.reactiverest.service.CoordinatorService;
 
 /**
  * This class exposes the API to access to some of coordinator functions and
@@ -21,6 +22,14 @@ public class CoordinatorAPI {
      * The coordinator service used to manage the event bus
      */
     private static CoordinatorService coordinatorService;
+    
+	/**
+	 * Private constructor for an utility class, construct a new
+	 * {@code CoordinatorAPI}
+	 */
+	private CoordinatorAPI() {
+		// Empty implementation
+	}
 
     /**
      * Enable access the coordinator service to allow usage of coordinator

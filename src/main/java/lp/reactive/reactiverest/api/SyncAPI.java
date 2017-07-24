@@ -1,13 +1,14 @@
 package lp.reactive.reactiverest.api;
 
-import lp.reactive.reactiverest.model.HttpRequest;
-import lp.reactive.reactiverest.model.HttpResponse;
-import lp.reactive.reactiverest.service.RestService;
+import java.io.IOException;
+import java.util.concurrent.ExecutionException;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.IOException;
-import java.util.concurrent.ExecutionException;
+import lp.reactive.reactiverest.model.HttpRequest;
+import lp.reactive.reactiverest.model.HttpResponse;
+import lp.reactive.reactiverest.service.RestService;
 
 /**
  * This class exposes the API to handle synchronous REST communications.
@@ -20,6 +21,13 @@ public class SyncAPI {
 	 * Logger
 	 */
 	private static final Logger LOGGER = LogManager.getFormatterLogger(SyncAPI.class);
+
+	/**
+	 * Private constructor for an utility class, construct a new {@code SyncAPI}
+	 */
+	private SyncAPI() {
+		// Empty implementation
+	}
 
 	/**
 	 * This API is used to formulate a synchronous api call on the base of the given

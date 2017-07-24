@@ -1,11 +1,12 @@
 package lp.reactive.reactiverest.api;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import io.reactivex.functions.Consumer;
 import lp.reactive.reactiverest.model.HttpRequest;
 import lp.reactive.reactiverest.model.HttpResponse;
 import lp.reactive.reactiverest.service.RestService;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 /**
  * This class exposes the API to handle reactive REST communications.
@@ -18,6 +19,13 @@ public class ReactiveAPI {
 	 * Logger
 	 */
 	private static final Logger LOGGER = LogManager.getFormatterLogger(ReactiveAPI.class);
+	
+	/**
+	 * Private constructor for an utility class, construct a new {@code ReactiveAPI}
+	 */
+	private ReactiveAPI() {
+		// Empty implementation
+	}
 
 	/**
 	 * This API is used to formulate a reactive api call on the base of the given

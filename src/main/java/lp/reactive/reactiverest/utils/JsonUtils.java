@@ -1,9 +1,11 @@
 package lp.reactive.reactiverest.utils;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+
 import retrofit2.converter.jackson.JacksonConverterFactory;
 
 /**
@@ -23,6 +25,13 @@ public class JsonUtils {
      */
     private static ObjectMapper INSTANCE;
 
+	/**
+	 * Private constructor for an utility class, construct a new {@code JsonUtils}
+	 */
+	private JsonUtils() {
+		// Empty implementation
+	}
+    
     /**
      * Static method used to inizialize and retrieve the {@link ObjectMapper}
      * instance
