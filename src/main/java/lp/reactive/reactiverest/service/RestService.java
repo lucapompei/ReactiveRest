@@ -65,10 +65,11 @@ public class RestService {
 		}
 		// make synchronous http request and get http response
 		Response<ResponseBody> rawResponse = call.execute();
-		while (attempts > 1 && !rawResponse.isSuccessful()) {
-			attempts--;
-			LOGGER.error("Received " + rawResponse.code() + ", waiting 2 seconds for retry... (remaining " + attempts
-					+ " attempts)");
+		int remainingAttempts = attempts;
+		while (remainingAttempts > 1 && !rawResponse.isSuccessful()) {
+			remainingAttempts--;
+			LOGGER.error("Received " + rawResponse.code() + ", waiting 2 seconds for retry... (remaining "
+					+ remainingAttempts + " attempts)");
 			try {
 				Thread.sleep(2000);
 			} catch (InterruptedException e) {
@@ -143,15 +144,15 @@ public class RestService {
 			public void onFailure(Call<ResponseBody> call, Throwable t) {
 				LOGGER.error("Error during executing asynchronous api call", t);
 				if (attempts > 1) {
-					int newAttempts = attempts - 1;
+					int remainingAttempts = attempts - 1;
 					LOGGER.error("Received " + t.getMessage() + ", waiting 2 seconds for retry... (remaining "
-							+ attempts + " attempts)");
+							+ remainingAttempts + " attempts)");
 					try {
 						Thread.sleep(2000);
 					} catch (InterruptedException e) {
 						// Unhandled exception
 					}
-					enqueueCall(call, consumerOnSuccess, consumerOnError, newAttempts);
+					enqueueCall(call, consumerOnSuccess, consumerOnError, remainingAttempts);
 				} else {
 					if (consumerOnError != null) {
 						consumerOnError.accept(t);
@@ -193,11 +194,11 @@ public class RestService {
 				: httpRequest.getQueryParams();
 		String queryString = httpRequest.getQueryString() == null ? null : httpRequest.getQueryString();
 		if (queryString != null) {
-			String queryStringSplitted[] = queryString.split("&");
+			String[] queryStringSplitted = queryString.split("&");
 			int index = 0;
 			int sizeList = queryStringSplitted.length;
 			for (; index < sizeList; index++) {
-				String stringValues[] = queryStringSplitted[index].split("=");
+				String[] stringValues = queryStringSplitted[index].split("=");
 				if (stringValues.length == 2) {
 					queryParams.put(stringValues[0], stringValues[1]);
 				}

@@ -30,7 +30,7 @@ public class EventAPI {
 	private EventAPI() {
 		// Empty implementation
 	}
-	
+
 	/**
 	 * This API is used to formulate a reactive api call on the base of the given
 	 * parameters and return a {@link HttpResponse}
@@ -42,16 +42,7 @@ public class EventAPI {
 	 *            when it is emitted
 	 */
 	public static void call(HttpRequest httpRequest, String eventIdentifier) {
-		if (httpRequest != null) {
-			if (TextUtils.isNullOrEmpty(eventIdentifier)) {
-				LOGGER.error("EventIdentifier must be not null");
-			} else {
-				LOGGER.debug("Reactive call to API with http request: " + httpRequest.toString());
-				RestService.callEvent(httpRequest, eventIdentifier, CoordinatorAPI.getCoordinator(), 1);
-			}
-		} else {
-			LOGGER.error("HttpRequest must not be null");
-		}
+		handleRequest(httpRequest, eventIdentifier, 1);
 	}
 
 	/**
@@ -69,6 +60,23 @@ public class EventAPI {
 	 *            call
 	 */
 	public static void call(HttpRequest httpRequest, String eventIdentifier, int attempts) {
+		handleRequest(httpRequest, eventIdentifier, attempts);
+	}
+
+	/**
+	 * This method handles all event based requests on the base of the incoming
+	 * parameters
+	 *
+	 * @param httpRequest,
+	 *            a prepared {@link HttpRequest} used for api call
+	 * @param eventIdentifier,
+	 *            the unique identifier to recognize the response event on event bus
+	 *            when it is emitted
+	 * @param attempts,
+	 *            the number of attempts to test if an error occurs during the api
+	 *            call
+	 */
+	private static void handleRequest(HttpRequest httpRequest, String eventIdentifier, int attempts) {
 		if (httpRequest != null) {
 			if (TextUtils.isNullOrEmpty(eventIdentifier)) {
 				LOGGER.error("EventIdentifier must be not null");

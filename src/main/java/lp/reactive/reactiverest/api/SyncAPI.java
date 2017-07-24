@@ -43,13 +43,7 @@ public class SyncAPI {
 	 *             if a problem occurred talking to the server
 	 */
 	public static HttpResponse call(HttpRequest httpRequest) throws ExecutionException, IOException {
-		if (httpRequest != null) {
-			LOGGER.debug("Synchronous call to API with http request: " + httpRequest.toString());
-			return RestService.callSync(httpRequest, 1);
-		} else {
-			LOGGER.error("HttpRequest must not be null");
-			return null;
-		}
+		return handleRequest(httpRequest, 1);
 	}
 
 	/**
@@ -70,6 +64,26 @@ public class SyncAPI {
 	 *             if a problem occurred talking to the server
 	 */
 	public static HttpResponse call(HttpRequest httpRequest, int attempts) throws ExecutionException, IOException {
+		return handleRequest(httpRequest, attempts);
+	}
+
+	/**
+	 * This method handles all sync requests on the base of the incoming parameters
+	 *
+	 * @param httpRequest,
+	 *            a prepared {@link HttpRequest} used for api call
+	 * @param attempts,
+	 *            the number of attempts to test if an error occurs during the api
+	 *            call
+	 * @return the http response encapsulated into a {@link HttpResponse} or
+	 *         {@code null} is some error occurs
+	 * @throws ExecutionException
+	 *             if a problem occurred during the retrieving of REST client
+	 * @throws IOException
+	 *             if a problem occurred talking to the server
+	 */
+	private static HttpResponse handleRequest(HttpRequest httpRequest, int attempts)
+			throws ExecutionException, IOException {
 		if (httpRequest != null) {
 			LOGGER.debug("Synchronous call to API with http request: " + httpRequest.toString());
 			return RestService.callSync(httpRequest, attempts);
