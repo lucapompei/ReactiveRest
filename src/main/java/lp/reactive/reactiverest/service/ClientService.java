@@ -1,17 +1,18 @@
 package lp.reactive.reactiverest.service;
 
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
+
 import lp.reactive.reactiverest.utils.JsonUtils;
 import lp.reactive.reactiverest.utils.TextUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import retrofit2.Retrofit;
-import retrofit2.converter.jackson.JacksonConverterFactory;
-
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
 
 /**
  * This service represents the retrofit client used for REST communications
@@ -37,12 +38,20 @@ public class ClientService {
 	 * in cache expire after 1 hour spent by its last usage. The cache stores up to
 	 * {@value CACHE_REST_CLIENTS_SIZE} elements simultaneously.
 	 */
-	private static LoadingCache<String, Retrofit> CACHE_REST_CLIENT = CacheBuilder.newBuilder()
+	private static final LoadingCache<String, Retrofit> CACHE_REST_CLIENT = CacheBuilder.newBuilder()
 			.maximumSize(CACHE_REST_CLIENTS_SIZE).expireAfterAccess(1, TimeUnit.HOURS)
 			.build(new CacheLoader<String, Retrofit>() {
 				@Override
 				public Retrofit load(String baseUrl) {
-					return inizializeRESTClient(baseUrl);
+					// a prior check was already performed
+					if (TextUtils.isNullOrEmpty(baseUrl)) {
+						LOGGER.error(
+								"No valid base url specified for REST client, it cannot be null or empty: " + baseUrl);
+						return null;
+					} else {
+						return new Retrofit.Builder().baseUrl(TextUtils.configHttpProtocolForBaseUrl(baseUrl))
+								.addConverterFactory(JsonUtils.getConverterInstance()).build();
+					}
 				}
 			});
 
@@ -52,25 +61,6 @@ public class ClientService {
 	 */
 	private ClientService() {
 		// Empty implementation
-	}
-
-	/**
-	 * Initialize a new {@link Retrofit} REST client, setting the given base url and
-	 * using a {@link JacksonConverterFactory} instance as default converter
-	 *
-	 * @param baseUrl,
-	 *            the base url used by the new REST client
-	 * @return a new {@link Retrofit} REST client
-	 */
-	private static Retrofit inizializeRESTClient(String baseUrl) {
-		// a prior check was already performed
-		if (TextUtils.isNullOrEmpty(baseUrl)) {
-			LOGGER.error("No valid base url specified for REST client, it cannot be null or empty: " + baseUrl);
-			return null;
-		} else {
-			return new Retrofit.Builder().baseUrl(TextUtils.configHttpProtocolForBaseUrl(baseUrl))
-					.addConverterFactory(JsonUtils.getConverterInstance()).build();
-		}
 	}
 
 	/**
