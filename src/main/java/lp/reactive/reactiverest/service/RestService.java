@@ -36,7 +36,7 @@ public class RestService {
 	/**
 	 * The seconds to wait before start a new api call when an error occurs
 	 */
-	private static final long SECONDS_TO_WAIT_BEFORE_RETRY = 2000;
+	private static final long SECONDS_TO_WAIT_BEFORE_RETRY = 2;
 
 	/**
 	 * Private constructor for an utility class, construct a new {@code RestService}
@@ -77,7 +77,7 @@ public class RestService {
 			LOGGER.error("Received " + errorMessage + ", waiting " + SECONDS_TO_WAIT_BEFORE_RETRY
 					+ " seconds for retry... (remaining " + remainingAttempts + " attempts)");
 			try {
-				Thread.sleep(SECONDS_TO_WAIT_BEFORE_RETRY);
+				Thread.sleep(SECONDS_TO_WAIT_BEFORE_RETRY * 1000);
 			} catch (InterruptedException e) {
 				// Unhandled exception
 				Thread.currentThread().interrupt();
@@ -146,7 +146,7 @@ public class RestService {
 			@Override
 			public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
 				HttpResponse httpResponse = prepareHttpResponse(response);
-				if (httpResponse != null && httpResponse.isSuccessful()) {
+				if (httpResponse != null && httpResponse.isSuccessful() && attempts <= 1) {
 					consumerOnSuccess.accept(httpResponse);
 				} else {
 					onFailure(call, new Exception(
@@ -162,7 +162,7 @@ public class RestService {
 					LOGGER.error("Received " + t.getMessage() + ", waiting " + SECONDS_TO_WAIT_BEFORE_RETRY
 							+ " seconds for retry... (remaining " + remainingAttempts + " attempts)");
 					try {
-						Thread.sleep(SECONDS_TO_WAIT_BEFORE_RETRY);
+						Thread.sleep(SECONDS_TO_WAIT_BEFORE_RETRY * 1000);
 					} catch (InterruptedException e) {
 						// Unhandled exception
 						Thread.currentThread().interrupt();
