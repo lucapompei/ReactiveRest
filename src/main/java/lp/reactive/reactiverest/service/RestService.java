@@ -34,6 +34,11 @@ public class RestService {
 	private static final Logger LOGGER = LogManager.getFormatterLogger(RestService.class);
 
 	/**
+	 * The seconds to wait before start a new api call when an error occurs
+	 */
+	private static final long SECONDS_TO_WAIT_BEFORE_RETRY = 2000;
+
+	/**
 	 * Private constructor for an utility class, construct a new {@code RestService}
 	 */
 	private RestService() {
@@ -66,12 +71,13 @@ public class RestService {
 		// make synchronous http request and get http response
 		Response<ResponseBody> rawResponse = call.execute();
 		int remainingAttempts = attempts;
-		while (remainingAttempts > 1 && !rawResponse.isSuccessful()) {
+		while (remainingAttempts > 1 && (rawResponse == null || !rawResponse.isSuccessful())) {
 			remainingAttempts--;
-			LOGGER.error("Received " + rawResponse.code() + ", waiting 2 seconds for retry... (remaining "
-					+ remainingAttempts + " attempts)");
+			String errorMessage = rawResponse == null ? "rawResponse null" : String.valueOf(rawResponse.code());
+			LOGGER.error("Received " + errorMessage + ", waiting " + SECONDS_TO_WAIT_BEFORE_RETRY
+					+ " seconds for retry... (remaining " + remainingAttempts + " attempts)");
 			try {
-				Thread.sleep(2000);
+				Thread.sleep(SECONDS_TO_WAIT_BEFORE_RETRY);
 			} catch (InterruptedException e) {
 				// Unhandled exception
 				Thread.currentThread().interrupt();
@@ -104,7 +110,11 @@ public class RestService {
 		// prepare the call
 		Call<ResponseBody> call = prepareCall(httpRequest);
 		if (call == null) {
-			LOGGER.error("Error during preparing call");
+			LOGGER.error("Call cannot be null");
+			return;
+		}
+		if (consumerOnSuccess == null) {
+			LOGGER.error("Async consumer on success cannot be null");
 			return;
 		}
 		// make asynchronous http request and get http response
@@ -136,29 +146,30 @@ public class RestService {
 			@Override
 			public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
 				HttpResponse httpResponse = prepareHttpResponse(response);
-				if (httpResponse != null) {
+				if (httpResponse != null && httpResponse.isSuccessful()) {
 					consumerOnSuccess.accept(httpResponse);
+				} else {
+					onFailure(call, new Exception(
+							httpResponse == null ? "HttpResponse is null" : httpResponse.getStatusCode()));
 				}
 			}
 
 			@Override
 			public void onFailure(Call<ResponseBody> call, Throwable t) {
-				LOGGER.error("Error during executing asynchronous api call", t);
+				LOGGER.error("Error during executing asynchronous api call", t.getMessage());
 				if (attempts > 1) {
 					int remainingAttempts = attempts - 1;
-					LOGGER.error("Received " + t.getMessage() + ", waiting 2 seconds for retry... (remaining "
-							+ remainingAttempts + " attempts)");
+					LOGGER.error("Received " + t.getMessage() + ", waiting " + SECONDS_TO_WAIT_BEFORE_RETRY
+							+ " seconds for retry... (remaining " + remainingAttempts + " attempts)");
 					try {
-						Thread.sleep(2000);
+						Thread.sleep(SECONDS_TO_WAIT_BEFORE_RETRY);
 					} catch (InterruptedException e) {
 						// Unhandled exception
 						Thread.currentThread().interrupt();
 					}
 					enqueueCall(call, consumerOnSuccess, consumerOnError, remainingAttempts);
-				} else {
-					if (consumerOnError != null) {
-						consumerOnError.accept(t);
-					}
+				} else if (consumerOnError != null) {
+					consumerOnError.accept(t);
 				}
 			}
 		});
@@ -178,6 +189,10 @@ public class RestService {
 	 *             if a problem occurred talking to the server
 	 */
 	private static Call<ResponseBody> prepareCall(HttpRequest httpRequest) throws ExecutionException, IOException {
+		if (httpRequest == null) {
+			LOGGER.error("HttpRequest cannot be null");
+			return null;
+		}
 		// obtain a REST client
 		Retrofit restClient = ClientService.getRestClient(httpRequest.getBaseUrl());
 		if (restClient == null) {
@@ -252,7 +267,9 @@ public class RestService {
 	}
 
 	/**
-	 * This method prepares and executes an event based REST communication
+	 * This method prepares and dispatch a {@code EventResponse} event on event bus
+	 * using the given {@param eventIdentifier} through the
+	 * {@link CoordinatorService}
 	 *
 	 * @param httpRequest,
 	 *            a prepared {@link HttpRequest} used for api call
@@ -268,27 +285,10 @@ public class RestService {
 	public static void callEvent(HttpRequest httpRequest, String eventIdentifier, CoordinatorService coordinatorService,
 			int attempts) {
 		// prepare and dispatch event response on event bus
-		RestService.prepareAndDispatchEvent(httpRequest, eventIdentifier, coordinatorService, attempts);
-	}
-
-	/**
-	 * Prepare and dispatch a {@code EventResponse} event on event bus using the
-	 * given {@param eventIdentifier} through the {@link CoordinatorService}
-	 *
-	 * @param httpRequest,
-	 *            a prepared {@link HttpRequest} used for api call
-	 * @param eventIdentifier,
-	 *            the identify used by subscribers to recognize the event on event
-	 *            bus
-	 * @param coordinatorService,
-	 *            the coordinator service used to post new event on event bus
-	 * @param attempts,
-	 *            the number of attempts to test if an error occurs during the api
-	 *            call
-	 */
-	private static void prepareAndDispatchEvent(HttpRequest httpRequest, String eventIdentifier,
-			CoordinatorService coordinatorService, int attempts) {
-		// prepare and asynchronously send event response
+		if (coordinatorService == null) {
+			LOGGER.error("Coordinator service cannot be null");
+			return;
+		}
 		new Thread(() -> {
 			try {
 				// obtaining http response
@@ -306,7 +306,7 @@ public class RestService {
 				// preparing the event response based on http error
 				EventResponse eventResponse = new EventResponse(eventIdentifier, ex);
 				// dispatching event response on event bus
-				LOGGER.error("Error during preparing event response for event " + eventIdentifier, ex);
+				LOGGER.error("Error during preparing event response for event " + eventIdentifier, ex.getMessage());
 				coordinatorService.post(eventResponse);
 			}
 		}).start();
@@ -328,6 +328,10 @@ public class RestService {
 	public static void callReact(HttpRequest httpRequest,
 			io.reactivex.functions.Consumer<HttpResponse> consumerOnSuccess,
 			io.reactivex.functions.Consumer<Throwable> consumerOnError, int attempts) {
+		if (consumerOnSuccess == null) {
+			LOGGER.error("Reactive consumer on success cannot be null");
+			return;
+		}
 		// prepare flowable to handle async response
 		Flowable<HttpResponse> flowable = Flowable.fromCallable(() -> RestService.callSync(httpRequest, attempts));
 		new Thread(() -> {

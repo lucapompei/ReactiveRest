@@ -81,7 +81,8 @@ public class EventAPI {
 			if (TextUtils.isNullOrEmpty(eventIdentifier)) {
 				LOGGER.error("EventIdentifier must be not null");
 			} else {
-				LOGGER.debug("Reactive call to API with http request: " + httpRequest.toString());
+				LOGGER.debug("Event based call to API with http request: " + httpRequest.toString()
+						+ " and eventIdentifier: " + eventIdentifier);
 				RestService.callEvent(httpRequest, eventIdentifier, CoordinatorAPI.getCoordinator(), attempts);
 			}
 		} else {

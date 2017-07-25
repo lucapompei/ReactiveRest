@@ -35,7 +35,7 @@ public class TextUtils {
 	 */
 	public static String configHttpProtocolForBaseUrl(String baseUrl) {
 		String regexForHttpProtocol = "^(http|https)://.*";
-		if (!baseUrl.matches(regexForHttpProtocol)) {
+		if (baseUrl != null && !baseUrl.matches(regexForHttpProtocol)) {
 			return "http://" + baseUrl;
 		} else {
 			return baseUrl;

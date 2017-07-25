@@ -110,12 +110,8 @@ public class ReactiveAPI {
 	private static void handleRequest(HttpRequest httpRequest, Consumer<HttpResponse> consumerOnSuccess,
 			Consumer<Throwable> consumerOnError, int attempts) {
 		if (httpRequest != null) {
-			if (consumerOnSuccess == null) {
-				LOGGER.error("Consumer on success must not be null");
-			} else {
-				LOGGER.debug("Reactive call to API with http request: " + httpRequest.toString());
-				RestService.callReact(httpRequest, consumerOnSuccess, consumerOnError, attempts);
-			}
+			LOGGER.debug("Reactive call to API with http request: " + httpRequest.toString());
+			RestService.callReact(httpRequest, consumerOnSuccess, consumerOnError, attempts);
 		} else {
 			LOGGER.error("HttpRequest must not be null");
 		}

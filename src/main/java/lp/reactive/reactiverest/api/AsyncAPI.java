@@ -113,7 +113,7 @@ public class AsyncAPI {
 			Consumer<Throwable> consumerOnError, int attempts) throws ExecutionException, IOException {
 		handleRequest(httpRequest, consumerOnSuccess, consumerOnError, attempts);
 	}
-	
+
 	/**
 	 * This method handles all async requests on the base of the incoming parameters
 	 *
