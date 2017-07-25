@@ -138,8 +138,8 @@ public class HttpRequest {
 	 */
 	public String toString() {
 		return "HttpRequest:\n" + "Url: " + getBaseUrl() + getApiEndpoint() + "\n" + "Method: " + getHttpMethod() + "\n"
-				+ "Headers: " + getHeaders() + "\n" + "Query param: " + getQueryParams() + "\n Query string: "
-				+ getQueryString() + "\n " + "Body params:" + " " + getBodyParams();
+				+ "Headers: " + getHeaders() + "\n" + "Query param: " + getQueryParams() + "\nQuery string: "
+				+ getQueryString() + "\n" + "Body params:" + " " + getBodyParams();
 	}
 
 	/**

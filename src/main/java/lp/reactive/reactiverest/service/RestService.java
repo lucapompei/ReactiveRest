@@ -68,23 +68,39 @@ public class RestService {
 			LOGGER.error("Error during preparing call");
 			return null;
 		}
-		// make synchronous http request and get http response
-		Response<ResponseBody> rawResponse = call.execute();
+		// handle synchronous api call
+		return executeCall(call, attempts);
+	}
+
+	private static HttpResponse executeCall(Call<ResponseBody> call, int attempts) throws IOException {
 		int remainingAttempts = attempts;
-		while (remainingAttempts > 1 && (rawResponse == null || !rawResponse.isSuccessful())) {
+		// preparing response
+		Response<ResponseBody> rawResponse = null;
+		try {
 			remainingAttempts--;
-			String errorMessage = rawResponse == null ? "rawResponse null" : String.valueOf(rawResponse.code());
-			LOGGER.error("Received " + errorMessage + ", waiting " + SECONDS_TO_WAIT_BEFORE_RETRY
-					+ " seconds for retry... (remaining " + remainingAttempts + " attempts)");
+			// make synchronous http request and get http response
+			rawResponse = call.clone().execute();
+		} catch (IOException ex) {
+			LOGGER.error("Received " + ex.getMessage());
+			if (remainingAttempts < 1) {
+				// no remaining attempts, throw the exception
+				throw ex;
+			}
+		}
+		if (remainingAttempts > 0 && (rawResponse == null || !rawResponse.isSuccessful())) {
+			// handling not successful response
+			LOGGER.error("Waiting " + SECONDS_TO_WAIT_BEFORE_RETRY + " seconds before retry... (remaining "
+					+ remainingAttempts + " attempts)");
 			try {
 				Thread.sleep(SECONDS_TO_WAIT_BEFORE_RETRY * 1000);
 			} catch (InterruptedException e) {
 				// Unhandled exception
 				Thread.currentThread().interrupt();
 			}
-			rawResponse = call.clone().execute();
+			return executeCall(call, remainingAttempts);
+		} else {
+			return prepareHttpResponse(rawResponse);
 		}
-		return prepareHttpResponse(rawResponse);
 	}
 
 	/**
@@ -140,21 +156,21 @@ public class RestService {
 			@Override
 			public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
 				HttpResponse httpResponse = prepareHttpResponse(response);
-				if (httpResponse != null && httpResponse.isSuccessful() && attempts <= 1) {
+				if ((httpResponse != null && httpResponse.isSuccessful()) || attempts <= 1) {
 					consumerOnSuccess.accept(httpResponse);
 				} else {
-					onFailure(call, new Exception(
+					onFailure(call, new Throwable(
 							httpResponse == null ? "HttpResponse is null" : httpResponse.getStatusCode()));
 				}
 			}
 
 			@Override
 			public void onFailure(Call<ResponseBody> call, Throwable t) {
-				LOGGER.error("Error during executing asynchronous api call", t.getMessage());
 				if (attempts > 1) {
 					int remainingAttempts = attempts - 1;
-					LOGGER.error("Received " + t.getMessage() + ", waiting " + SECONDS_TO_WAIT_BEFORE_RETRY
-							+ " seconds for retry... (remaining " + remainingAttempts + " attempts)");
+					LOGGER.error("Received " + t.getMessage());
+					LOGGER.error("Waiting " + SECONDS_TO_WAIT_BEFORE_RETRY + " seconds for retry... (remaining "
+							+ remainingAttempts + " attempts)");
 					try {
 						Thread.sleep(SECONDS_TO_WAIT_BEFORE_RETRY * 1000);
 					} catch (InterruptedException e) {
@@ -162,8 +178,11 @@ public class RestService {
 						Thread.currentThread().interrupt();
 					}
 					enqueueCall(call, consumerOnSuccess, consumerOnError, remainingAttempts);
-				} else if (consumerOnError != null) {
-					consumerOnError.accept(t);
+				} else {
+					LOGGER.error("Error during executing asynchronous api call, received " + t.getMessage());
+					if (consumerOnError != null) {
+						consumerOnError.accept(t);
+					}
 				}
 			}
 		});
