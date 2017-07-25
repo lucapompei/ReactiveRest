@@ -1,6 +1,5 @@
 package lp.reactive.reactiverest.api;
 
-import java.io.IOException;
 import java.util.concurrent.ExecutionException;
 import java.util.function.Consumer;
 
@@ -40,11 +39,9 @@ public class AsyncAPI {
 	 *            the consumer of asynchronous executing
 	 * @throws ExecutionException
 	 *             if a problem occurred during the retrieving of REST client
-	 * @throws IOException
-	 *             if a problem occurred talking to the server
 	 */
 	public static void call(HttpRequest httpRequest, Consumer<HttpResponse> consumerOnSuccess)
-			throws ExecutionException, IOException {
+			throws ExecutionException {
 		handleRequest(httpRequest, consumerOnSuccess, null, 1);
 	}
 
@@ -62,11 +59,9 @@ public class AsyncAPI {
 	 *            call
 	 * @throws ExecutionException
 	 *             if a problem occurred during the retrieving of REST client
-	 * @throws IOException
-	 *             if a problem occurred talking to the server
 	 */
 	public static void call(HttpRequest httpRequest, Consumer<HttpResponse> consumerOnSuccess, int attempts)
-			throws ExecutionException, IOException {
+			throws ExecutionException {
 		handleRequest(httpRequest, consumerOnSuccess, null, attempts);
 	}
 
@@ -82,11 +77,9 @@ public class AsyncAPI {
 	 *            the consumer of possible asynchronous errors
 	 * @throws ExecutionException
 	 *             if a problem occurred during the retrieving of REST client
-	 * @throws IOException
-	 *             if a problem occurred talking to the server
 	 */
 	public static void call(HttpRequest httpRequest, Consumer<HttpResponse> consumerOnSuccess,
-			Consumer<Throwable> consumerOnError) throws ExecutionException, IOException {
+			Consumer<Throwable> consumerOnError) throws ExecutionException {
 		handleRequest(httpRequest, consumerOnSuccess, consumerOnError, 1);
 	}
 
@@ -106,11 +99,9 @@ public class AsyncAPI {
 	 *            call
 	 * @throws ExecutionException
 	 *             if a problem occurred during the retrieving of REST client
-	 * @throws IOException
-	 *             if a problem occurred talking to the server
 	 */
 	public static void call(HttpRequest httpRequest, Consumer<HttpResponse> consumerOnSuccess,
-			Consumer<Throwable> consumerOnError, int attempts) throws ExecutionException, IOException {
+			Consumer<Throwable> consumerOnError, int attempts) throws ExecutionException {
 		handleRequest(httpRequest, consumerOnSuccess, consumerOnError, attempts);
 	}
 
@@ -128,11 +119,9 @@ public class AsyncAPI {
 	 *            call
 	 * @throws ExecutionException
 	 *             if a problem occurred during the retrieving of REST client
-	 * @throws IOException
-	 *             if a problem occurred talking to the server
 	 */
 	private static void handleRequest(HttpRequest httpRequest, Consumer<HttpResponse> consumerOnSuccess,
-			Consumer<Throwable> consumerOnError, int attempts) throws ExecutionException, IOException {
+			Consumer<Throwable> consumerOnError, int attempts) throws ExecutionException {
 		if (httpRequest != null) {
 			LOGGER.debug("Asynchronous call to API with http request: " + httpRequest.toString());
 			RestService.callAsync(httpRequest, consumerOnSuccess, consumerOnError, attempts);

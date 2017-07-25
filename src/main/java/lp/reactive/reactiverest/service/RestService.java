@@ -102,11 +102,9 @@ public class RestService {
 	 *            call
 	 * @throws ExecutionException
 	 *             if a problem occurred during the retrieving of REST client
-	 * @throws IOException
-	 *             if a problem occurred talking to the server
 	 */
 	public static void callAsync(HttpRequest httpRequest, Consumer<HttpResponse> consumerOnSuccess,
-			Consumer<Throwable> consumerOnError, int attempts) throws ExecutionException, IOException {
+			Consumer<Throwable> consumerOnError, int attempts) throws ExecutionException {
 		// prepare the call
 		Call<ResponseBody> call = prepareCall(httpRequest);
 		if (call == null) {
@@ -134,10 +132,6 @@ public class RestService {
 	 * @param attempts,
 	 *            the number of attempts to test if an error occurs during the api
 	 *            call
-	 * @throws ExecutionException
-	 *             if a problem occurred during the retrieving of REST client
-	 * @throws IOException
-	 *             if a problem occurred talking to the server
 	 */
 	private static void enqueueCall(Call<ResponseBody> call, Consumer<HttpResponse> consumerOnSuccess,
 			Consumer<Throwable> consumerOnError, int attempts) {
@@ -185,10 +179,8 @@ public class RestService {
 	 *         communications or {@code null} is some error occurs
 	 * @throws ExecutionException
 	 *             if a problem occurred during the retrieving of REST client
-	 * @throws IOException
-	 *             if a problem occurred talking to the server
 	 */
-	private static Call<ResponseBody> prepareCall(HttpRequest httpRequest) throws ExecutionException, IOException {
+	private static Call<ResponseBody> prepareCall(HttpRequest httpRequest) throws ExecutionException {
 		if (httpRequest == null) {
 			LOGGER.error("HttpRequest cannot be null");
 			return null;
@@ -294,7 +286,7 @@ public class RestService {
 				// obtaining http response
 				HttpResponse httpResponse = callSync(httpRequest, attempts);
 				if (httpRequest == null) {
-					throw new Exception("HttpResponse is null");
+					throw new ExecutionException("HttpResponse is null", null);
 				} else {
 					// preparing the event response based on http response
 					EventResponse eventResponse = new EventResponse(eventIdentifier, httpResponse);
@@ -302,7 +294,7 @@ public class RestService {
 					LOGGER.debug("Posting event response on event bus identifier by " + eventIdentifier);
 					coordinatorService.post(eventResponse);
 				}
-			} catch (Exception ex) {
+			} catch (ExecutionException | IOException ex) {
 				// preparing the event response based on http error
 				EventResponse eventResponse = new EventResponse(eventIdentifier, ex);
 				// dispatching event response on event bus
