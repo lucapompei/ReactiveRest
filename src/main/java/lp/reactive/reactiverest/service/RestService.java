@@ -276,7 +276,7 @@ public class RestService {
 
 	/**
 	 * This method prepares and dispatch a {@code EventResponse} event on event bus
-	 * using the given {@param eventIdentifier} through the
+	 * using the given {@code eventIdentifier} through the
 	 * {@link CoordinatorService}
 	 *
 	 * @param httpRequest,
