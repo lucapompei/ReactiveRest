@@ -166,9 +166,9 @@ public class RestService {
 
 			@Override
 			public void onFailure(Call<ResponseBody> call, Throwable t) {
+				LOGGER.error("Error during executing asynchronous api call, received " + t.getMessage());
 				if (attempts > 1) {
 					int remainingAttempts = attempts - 1;
-					LOGGER.error("Received " + t.getMessage());
 					LOGGER.error("Waiting " + SECONDS_TO_WAIT_BEFORE_RETRY + " seconds for retry... (remaining "
 							+ remainingAttempts + " attempts)");
 					try {
@@ -178,11 +178,8 @@ public class RestService {
 						Thread.currentThread().interrupt();
 					}
 					enqueueCall(call, consumerOnSuccess, consumerOnError, remainingAttempts);
-				} else {
-					LOGGER.error("Error during executing asynchronous api call, received " + t.getMessage());
-					if (consumerOnError != null) {
-						consumerOnError.accept(t);
-					}
+				} else if (consumerOnError != null) {
+					consumerOnError.accept(t);
 				}
 			}
 		});
@@ -347,7 +344,14 @@ public class RestService {
 		Flowable<HttpResponse> flowable = Flowable.fromCallable(() -> RestService.callSync(httpRequest, attempts));
 		new Thread(() -> {
 			if (consumerOnError == null) {
-				flowable.subscribe(consumerOnSuccess);
+				LOGGER.debug("No consumer on error specified, using a default one");
+				flowable.subscribe(consumerOnSuccess, new io.reactivex.functions.Consumer<Throwable>() {
+					@Override
+					public void accept(Throwable arg0) throws Exception {
+						// unhandled event
+						LOGGER.error("Default consumer onError has received: " + arg0.getMessage());
+					}
+				});
 			} else {
 				flowable.subscribe(consumerOnSuccess, consumerOnError);
 			}
