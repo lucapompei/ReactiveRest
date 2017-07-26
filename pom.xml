@@ -7,7 +7,7 @@
     <version>1.8</version>
     <packaging>jar</packaging>
 
-    <name>ReactiveRest</name>
+    <name>${project.artifactId}</name>
     <url>https://github.com/lucapompei/ReactiveRest</url>
 
     <licenses>
