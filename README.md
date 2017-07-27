@@ -1,4 +1,7 @@
 # Reactive Rest
+
+[![Build Status](https://travis-ci.org/lucapompei/ReactiveRest.svg?branch=master)](https://travis-ci.org/lucapompei/ReactiveRest)
+
 =============================
 
 The Reactive Rest client is a simple and fast HTTP client, based on Retrofit 2 and Guava cache implementations, which help you to make REST communications in a rapidly and easy way.
