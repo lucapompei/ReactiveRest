@@ -42,6 +42,7 @@ HttpMethod httpMethod = HttpMethod.GET;
 Map<String, String> headers = ImmutableMap.of("AUTH_TOKEN", "1234567");
 Map<String, String> queryParams = ImmutableMap.of("sort", "desc");
 Map<String, String> bodyParams = ImmutableMap.of("code", "first");
+
     
 // Full HTTP request
 HttpRequest httpRequest = new HttpRequest.
@@ -90,7 +91,7 @@ HttpRequest httpRequest = new HttpRequest.
 
     ```java
     // Define an event identifier
-    static String EVENT_IDENTIFIER = "MyEvent";
+    static final String EVENT_IDENTIFIER = "MyEvent";
         
     // Register entity to Event Bus through a coordinator
     CoordinatorAPI.getCoordinator().register(this);
