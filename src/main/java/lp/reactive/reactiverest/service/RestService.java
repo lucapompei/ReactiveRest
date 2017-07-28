@@ -257,7 +257,6 @@ public class RestService {
 		// make the http request with respect to the indicated http method
 		// as default will be considered a GET http method
 		switch (httpRequest.getHttpMethod()) {
-		default:
 		case GET:
 			call = httpCall.makeGET(apiEndpoint, headers, queryParams);
 			break;
@@ -269,6 +268,9 @@ public class RestService {
 			break;
 		case DELETE:
 			call = httpCall.makeDELETE(apiEndpoint, headers, queryParams, bodyParams);
+			break;
+		default:
+			call = httpCall.makeGET(apiEndpoint, headers, queryParams);
 			break;
 		}
 		return call;
