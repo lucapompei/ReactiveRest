@@ -28,13 +28,6 @@ public class CoordinatorService {
 	private EventBus eventBus;
 
 	/**
-	 * Construct a new empty {@link CoordinatorService}
-	 */
-	public CoordinatorService() {
-		// Empty implementation
-	}
-
-	/**
 	 * This method provides access to {@link EventBus}, initializating it if
 	 * necessary
 	 *
