@@ -1,6 +1,7 @@
 package lp.reactive.reactiverest.service;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
@@ -47,14 +48,14 @@ public class RestService {
 
 	/**
 	 * This method is used to formulate a synchronous api call on the base of the
-	 * given parameters and return a {@link HttpResponse}
+	 * given parameters and return a {@code HttpResponse}
 	 *
 	 * @param httpRequest,
-	 *            a prepared {@link HttpRequest} used for api call
+	 *            a prepared {@code HttpRequest} used for api call
 	 * @param attempts,
 	 *            the number of attempts to test if an error occurs during the api
 	 *            call
-	 * @return the http response encapsulated into a {@link HttpResponse} or
+	 * @return the http response encapsulated into a {@code HttpResponse} or
 	 *         {@code null} is some error occurs
 	 * @throws ExecutionException
 	 *             if a problem occurred during the retrieving of REST client
@@ -62,6 +63,7 @@ public class RestService {
 	 *             if a problem occurred talking to the server
 	 */
 	public static HttpResponse callSync(HttpRequest httpRequest, int attempts) throws ExecutionException, IOException {
+		Date startTime = new Date();
 		// prepare the call
 		Call<ResponseBody> call = prepareCall(httpRequest);
 		if (call == null) {
@@ -69,9 +71,24 @@ public class RestService {
 			return null;
 		}
 		// handle synchronous api call
-		return executeCall(call, attempts);
+		HttpResponse response = executeCall(call, attempts);
+		Date endTime = new Date();
+		LOGGER.info("Returned response in " + String.format("%s ms", endTime.getTime() - startTime.getTime())
+				+ " milliseconds");
+		return response;
 	}
 
+	/**
+	 * Executes a sync api call on the base of the prepared {@link call} and the
+	 * maximum {@link attempts}
+	 * 
+	 * @param call,
+	 *            the call to synchronously execute
+	 * @param attempts,
+	 *            the maximum number of attempts
+	 * @return the received httpResponse
+	 * @throws IOException
+	 */
 	private static HttpResponse executeCall(Call<ResponseBody> call, int attempts) throws IOException {
 		int remainingAttempts = attempts;
 		// preparing response
@@ -131,8 +148,9 @@ public class RestService {
 			LOGGER.error("Async consumer on success cannot be null");
 			return;
 		}
+		Date startTime = new Date();
 		// make asynchronous http request and get http response
-		enqueueCall(call, consumerOnSuccess, consumerOnError, attempts);
+		enqueueCall(call, consumerOnSuccess, consumerOnError, attempts, startTime);
 	}
 
 	/**
@@ -148,15 +166,20 @@ public class RestService {
 	 * @param attempts,
 	 *            the number of attempts to test if an error occurs during the api
 	 *            call
+	 * @param startTime,
+	 *            the start time of async api call
 	 */
 	private static void enqueueCall(Call<ResponseBody> call, Consumer<HttpResponse> consumerOnSuccess,
-			Consumer<Throwable> consumerOnError, int attempts) {
+			Consumer<Throwable> consumerOnError, int attempts, Date startTime) {
 		// make asynchronous http request and get http response
 		call.clone().enqueue(new Callback<ResponseBody>() {
 			@Override
 			public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
 				HttpResponse httpResponse = prepareHttpResponse(response);
 				if ((httpResponse != null && httpResponse.isSuccessful()) || attempts <= 1) {
+					Date endTime = new Date();
+					LOGGER.info("Returned response in "
+							+ String.format("%s ms", endTime.getTime() - startTime.getTime()) + " milliseconds");
 					consumerOnSuccess.accept(httpResponse);
 				} else {
 					onFailure(call, new Throwable(
@@ -177,7 +200,7 @@ public class RestService {
 						// Unhandled exception
 						Thread.currentThread().interrupt();
 					}
-					enqueueCall(call, consumerOnSuccess, consumerOnError, remainingAttempts);
+					enqueueCall(call, consumerOnSuccess, consumerOnError, remainingAttempts, startTime);
 				} else if (consumerOnError != null) {
 					consumerOnError.accept(t);
 				}
