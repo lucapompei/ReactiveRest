@@ -154,14 +154,14 @@ You can also depend on the .jar through Maven:
 <dependency>
   <groupId>lp.reactive</groupId>
   <artifactId>ReactiveRest</artifactId>
-  <version>1.8</version>
+  <version>1.9</version>
 </dependency>
 ```
 
 or Gradle:
 
 ```groovy
-compile "lp.reactive:ReactiveRest:1.8"
+compile "lp.reactive:ReactiveRest:1.9"
 ```
 
 
