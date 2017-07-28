@@ -13,7 +13,6 @@ import org.apache.logging.log4j.Logger;
 import io.reactivex.Flowable;
 import lp.reactive.reactiverest.model.EventResponse;
 import lp.reactive.reactiverest.model.HttpCall;
-import lp.reactive.reactiverest.model.HttpMethod;
 import lp.reactive.reactiverest.model.HttpRequest;
 import lp.reactive.reactiverest.model.HttpResponse;
 import okhttp3.ResponseBody;
@@ -236,11 +235,10 @@ public class RestService {
 		HttpCall httpCall = restClient.create(HttpCall.class);
 		// handle possible null values for query string and body parameters
 		String apiEndpoint = httpRequest.getApiEndpoint();
-		HttpMethod httpMethod = httpRequest.getHttpMethod() == null ? HttpMethod.GET : httpRequest.getHttpMethod();
 		Map<String, String> headers = httpRequest.getHeaders() == null ? new HashMap<>() : httpRequest.getHeaders();
 		Map<String, String> queryParams = httpRequest.getQueryParams() == null ? new HashMap<>()
 				: httpRequest.getQueryParams();
-		String queryString = httpRequest.getQueryString() == null ? null : httpRequest.getQueryString();
+		String queryString = httpRequest.getQueryString();
 		if (queryString != null) {
 			String[] queryStringSplitted = queryString.split("&");
 			int index = 0;
@@ -258,7 +256,8 @@ public class RestService {
 		Call<ResponseBody> call;
 		// make the http request with respect to the indicated http method
 		// as default will be considered a GET http method
-		switch (httpMethod) {
+		switch (httpRequest.getHttpMethod()) {
+		default:
 		case GET:
 			call = httpCall.makeGET(apiEndpoint, headers, queryParams);
 			break;
@@ -271,9 +270,6 @@ public class RestService {
 		case DELETE:
 			call = httpCall.makeDELETE(apiEndpoint, headers, queryParams, bodyParams);
 			break;
-		default:
-			LOGGER.error("Not valid http method used for api call");
-			return null;
 		}
 		return call;
 	}

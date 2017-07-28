@@ -34,6 +34,13 @@ public class TestAsyncAPI {
 	private static final Map<String, String> BODY_PARAMS = ImmutableMap.of("code", "first");
 	private static final int MAXIMUM_ATTEMPTS = 3;
 
+	/**
+	 * Consumers (on success and on error)
+	 */
+	private static Consumer<HttpResponse> consumerOnSuccess = httpResponse -> System.out
+			.println(httpResponse.toString());
+	private static Consumer<Throwable> consumerOnError = System.out::println;
+
 	public static void main(String[] argv) {
 		try {
 			// testing basic async api
@@ -73,13 +80,6 @@ public class TestAsyncAPI {
 		}
 	}
 
-	/**
-	 * Consumers (on success and on error)
-	 */
-	private static Consumer<HttpResponse> consumerOnSuccess = httpResponse -> System.out
-			.println(httpResponse.toString());
-	private static Consumer<Throwable> consumerOnError = System.out::println;
-
 	public static void testBasicAsyncAPI() throws ExecutionException {
 		System.out.println("Testing basic AsyncAPI call");
 		// prepare http request
@@ -108,7 +108,8 @@ public class TestAsyncAPI {
 	}
 
 	public static void testBasicAsyncAPIHandlingErrorsWithRetry() throws ExecutionException {
-		System.out.println("Testing basic AsyncAPI call handling errors with retry option (maximum attempts " + MAXIMUM_ATTEMPTS + ")");
+		System.out.println("Testing basic AsyncAPI call handling errors with retry option (maximum attempts "
+				+ MAXIMUM_ATTEMPTS + ")");
 		// prepare http request
 		HttpRequest httpRequest = new HttpRequest.Builder(BASE_URL, API_ENDPOINT).build();
 		System.out.println(httpRequest.toString());
