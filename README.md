@@ -18,6 +18,18 @@ Using this library, you can make 4 different types of HTTP REST communications:
 
 The Reactive REST client supports GET, POST, PUT and DELETE HTTP method and lets you indicate the maximum number of attempts to use to repeat an api call if an error occurs.
 
+
+Summary features
+--------
+
+
+- Simplicity and rapidity to create and consume http request;
+- 4 different type of rest communication (async, sync, event-based, reactive);
+- Complete support for GET, POST, PUT and DELETE http method;
+- Possibility to set a maximum number of attempts to retry an api call in case of failed communications;
+- Api call duration statistics.
+
+
 API Usage
 --------
 
