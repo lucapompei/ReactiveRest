@@ -23,10 +23,10 @@ Summary features
 --------
 
 
-- Simplicity and rapidity to create and consume http request;
-- 4 different type of rest communication (async, sync, event-based, reactive);
-- Complete support for GET, POST, PUT and DELETE http method;
-- Possibility to set a maximum number of attempts to retry an api call in case of failed communications;
+- Simplicity and rapidity to create and consume http requests;
+- 4 different types of rest communication (async, sync, event-based, reactive);
+- Complete support for GET, POST, PUT and DELETE http methods;
+- Possibility to set a maximum number of attempts to retry an api call in case of failed communication;
 - Api call duration statistics.
 
 
