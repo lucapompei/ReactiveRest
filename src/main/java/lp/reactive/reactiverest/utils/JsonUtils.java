@@ -33,7 +33,7 @@ public class JsonUtils {
 	}
 
 	/**
-	 * Static method used to inizialize and retrieve the {@link ObjectMapper}
+	 * Static method used to initialize and retrieve the {@link ObjectMapper}
 	 * instance
 	 *
 	 * @return a valid {@link ObjectMapper} instance

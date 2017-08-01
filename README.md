@@ -84,7 +84,7 @@ HttpRequest httpRequest = new HttpRequest.
 - AsyncAPI:
 
     ```java
-    // Define a Java Consumer to handle success reponse 
+    // Define a Java Consumer to handle success response
     // and, optionally, another Consumer to handle error response
     Consumer<HttpResponse> consumerOnSuccess;
     Consumer<Throwable> consumerOnError;
@@ -135,7 +135,7 @@ HttpRequest httpRequest = new HttpRequest.
 - ReactiveAPI:
 
     ```java
-    // Define a Reactive Consumer to handle success reponse 
+    // Define a Reactive Consumer to handle success response
     // and, optionally, another Consumer to handle error response
     Consumer<HttpResponse> consumerOnSuccess;
     Consumer<Throwable> consumerOnError;

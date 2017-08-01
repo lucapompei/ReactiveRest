@@ -28,7 +28,7 @@ public class CoordinatorService {
 	private EventBus eventBus;
 
 	/**
-	 * This method provides access to {@link EventBus}, initializating it if
+	 * This method provides access to {@link EventBus}, initializing it if
 	 * necessary
 	 *
 	 * @return a {@link EventBus}
@@ -69,7 +69,7 @@ public class CoordinatorService {
 			return;
 		}
 		LOGGER.debug("Registering multiple objects to event bus subscribers");
-		objects.stream().forEach(o -> getEventBus().register(o));
+		objects.forEach(o -> getEventBus().register(o));
 	}
 
 	/**
@@ -99,7 +99,7 @@ public class CoordinatorService {
 			return;
 		}
 		LOGGER.debug("Unregistering multiple objects from event bus subscribers");
-		objects.stream().forEach(o -> getEventBus().unregister(o));
+		objects.forEach(o -> getEventBus().unregister(o));
 	}
 
 	/**
@@ -111,6 +111,7 @@ public class CoordinatorService {
 	public void post(EventResponse event) {
 		if (event == null) {
 			LOGGER.error("Event to post cannot be null");
+			return;
 		}
 		LOGGER.debug("Posting a new event on event bus");
 		getEventBus().post(event);

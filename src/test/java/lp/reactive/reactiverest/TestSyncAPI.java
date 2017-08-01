@@ -62,7 +62,7 @@ public class TestSyncAPI {
 		System.out.println(httpRequest.toString());
 		// execute api call and getting http response
 		HttpResponse httpResponse = SyncAPI.call(httpRequest);
-		if (httpRequest != null) {
+		if (httpResponse != null) {
 			System.out.println(httpResponse.toString());
 		}
 	}
@@ -74,7 +74,7 @@ public class TestSyncAPI {
 		System.out.println(httpRequest.toString());
 		// execute api call and getting http response
 		HttpResponse httpResponse = SyncAPI.call(httpRequest, MAXIMUM_ATTEMPTS);
-		if (httpRequest != null) {
+		if (httpResponse != null) {
 			System.out.println(httpResponse.toString());
 		}
 	}
@@ -87,7 +87,7 @@ public class TestSyncAPI {
 		System.out.println(httpRequest.toString());
 		// execute api call and getting http response
 		HttpResponse httpResponse = SyncAPI.call(httpRequest);
-		if (httpRequest != null) {
+		if (httpResponse != null) {
 			System.out.println(httpResponse.toString());
 		}
 	}

@@ -1,7 +1,7 @@
 package lp.reactive.reactiverest.model;
 
 /**
- * This class represents an event that incapsulates a {@link HttpResponse}
+ * This class represents an event that encapsulates a {@link HttpResponse}
  * obtained from a http request
  *
  * @author lucapompei
@@ -24,7 +24,7 @@ public class EventResponse {
     private HttpResponse httpResponse;
 
     /**
-     * The possible catched error
+     * The possible caught error
      */
     private Throwable httpError;
 
@@ -86,9 +86,9 @@ public class EventResponse {
     }
 
     /**
-     * Return the catched error
+     * Return the caught error
      *
-     * @return the catched error
+     * @return the caught error
      */
     public Throwable getEventError() {
         return httpError;

@@ -7,14 +7,11 @@ import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.function.Consumer;
 
+import lp.reactive.reactiverest.model.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import io.reactivex.Flowable;
-import lp.reactive.reactiverest.model.EventResponse;
-import lp.reactive.reactiverest.model.HttpCall;
-import lp.reactive.reactiverest.model.HttpRequest;
-import lp.reactive.reactiverest.model.HttpResponse;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -78,15 +75,15 @@ public class RestService {
 	}
 
 	/**
-	 * Executes a sync api call on the base of the prepared {@link call} and the
-	 * maximum {@link attempts}
+	 * Executes a sync api call on the base of the prepared call and the
+	 * maximum number of attempts
 	 * 
 	 * @param call,
 	 *            the call to synchronously execute
 	 * @param attempts,
 	 *            the maximum number of attempts
 	 * @return the received httpResponse
-	 * @throws IOException
+	 * @throws IOException, if the call execution fails
 	 */
 	private static HttpResponse executeCall(Call<ResponseBody> call, int attempts) throws IOException {
 		int remainingAttempts = attempts;
@@ -156,8 +153,8 @@ public class RestService {
 	 * This method starts a new asynchronous api call based on an already prepared
 	 * call and return a {@link HttpResponse}
 	 *
-	 * @param httpRequest,
-	 *            a prepared {@link HttpRequest} used for api call
+	 * @param call,
+	 *            a prepared {@link Call} used for api call
 	 * @param consumerOnSuccess,
 	 *            the consumer used to handle success response
 	 * @param consumerOnError,
@@ -234,6 +231,7 @@ public class RestService {
 		// initialize the http request using the previous obtained REST client
 		HttpCall httpCall = restClient.create(HttpCall.class);
 		// handle possible null values for query string and body parameters
+		HttpMethod httpMethod = httpRequest.getHttpMethod() == null ? HttpMethod.GET : httpRequest.getHttpMethod();
 		String apiEndpoint = httpRequest.getApiEndpoint();
 		Map<String, String> headers = httpRequest.getHeaders() == null ? new HashMap<>() : httpRequest.getHeaders();
 		Map<String, String> queryParams = httpRequest.getQueryParams() == null ? new HashMap<>()
@@ -256,7 +254,7 @@ public class RestService {
 		Call<ResponseBody> call;
 		// make the http request with respect to the indicated http method
 		// as default will be considered a GET http method
-		switch (httpRequest.getHttpMethod()) {
+		switch (httpMethod) {
 		case GET:
 			call = httpCall.makeGET(apiEndpoint, headers, queryParams);
 			break;
@@ -270,7 +268,7 @@ public class RestService {
 			call = httpCall.makeDELETE(apiEndpoint, headers, queryParams, bodyParams);
 			break;
 		default:
-			call = httpCall.makeGET(apiEndpoint, headers, queryParams);
+			call = null;
 			break;
 		}
 		return call;
@@ -366,13 +364,10 @@ public class RestService {
 		new Thread(() -> {
 			if (consumerOnError == null) {
 				LOGGER.debug("No consumer on error specified, using a default one");
-				flowable.subscribe(consumerOnSuccess, new io.reactivex.functions.Consumer<Throwable>() {
-					@Override
-					public void accept(Throwable arg0) throws Exception {
-						// unhandled event
-						LOGGER.error("Default consumer onError has received: " + arg0.getMessage());
-					}
-				});
+				flowable.subscribe(consumerOnSuccess, err -> {
+                    // unhandled event
+                    LOGGER.error("Default consumer onError has received: " + err.getMessage());
+                });
 			} else {
 				flowable.subscribe(consumerOnSuccess, consumerOnError);
 			}

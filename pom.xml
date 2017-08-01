@@ -112,7 +112,7 @@
     </build>
 
     <dependencies>
-        <!-- Junit depedencies -->
+        <!-- Junit dependencies -->
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>

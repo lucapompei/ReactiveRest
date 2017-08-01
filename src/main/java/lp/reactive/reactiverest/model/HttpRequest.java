@@ -10,47 +10,40 @@ import java.util.Map;
 public class HttpRequest {
 
 	/**
-	 * @param baseUrl,
-	 *            the base url used to compose the api call
+	 * The base url used to compose the api call
 	 */
 	private final String baseUrl;
 
 	/**
-	 * @param apiEndpoint,
-	 *            the relative path used to specify the api endpoint and
+	 * The relative path used to specify the api endpoint and
 	 *            formulate the complete api call
 	 */
 	private final String apiEndpoint;
 
 	/**
-	 * @param headers,
-	 *            a set of headers used for api call
+	 * The set of headers used for api call
 	 */
 	private final Map<String, String> headers;
 
 	/**
-	 * @param queryParams,
-	 *            the query string used to compose the api call expressed as a
+	 * The query string used to compose the api call expressed as a
 	 *            map
 	 */
 	private final Map<String, String> queryParams;
 
 	/**
-	 * @param queryString,
-	 *            the query string used to compose the api call expressed as a
+	 * The query string used to compose the api call expressed as a
 	 *            single string
 	 */
 	private final String queryString;
 
 	/**
-	 * @param httpMethod,
-	 *            the http method used to compose the api call
+	 * The http method used to compose the api call
 	 */
 	private final HttpMethod httpMethod;
 
 	/**
-	 * @param bodyParams,
-	 *            the body parameters used to componse the api call
+	 * The body parameters used to compose the api call
 	 */
 	private final Map<String, String> bodyParams;
 
@@ -148,45 +141,38 @@ public class HttpRequest {
 	public static class Builder {
 
 		/**
-		 * @param baseUrl,
-		 *            the base url used to compose the api call
+		 * The base url used to compose the api call
 		 */
 		private String baseUrl;
 
 		/**
-		 * @param apiEndpoint,
-		 *            the relative path used to specify the api endpoint and
+		 * The relative path used to specify the api endpoint and
 		 *            formulate the complete api call
 		 */
 		private String apiEndpoint;
 
 		/**
-		 * @param headers,
-		 *            a set of headers used for api call
+		 * The set of headers used for api call
 		 */
 		private Map<String, String> headers;
 
 		/**
-		 * @param queryParams,
-		 *            the query string used to compose the api call
+		 * The query string used to compose the api call
 		 */
 		private Map<String, String> queryParams;
 
 		/**
-		 * @param queryString,
-		 *            the query string used to compose the api call
+		 * The query string used to compose the api call
 		 */
 		private String queryString;
 
 		/**
-		 * @param httpMethod,
-		 *            the http method used to compose the api call
+		 * The http method used to compose the api call
 		 */
 		private HttpMethod httpMethod;
 
 		/**
-		 * @param bodyParams,
-		 *            the body parameters used to componse the api call
+		 * The body parameters used to compose the api call
 		 */
 		private Map<String, String> bodyParams;
 
@@ -209,7 +195,7 @@ public class HttpRequest {
 		 *
 		 * @param httpMethod,
 		 *            the http method used for api call
-		 * @return a {@link Builder} with setted http method
+		 * @return a {@link Builder} with http method set
 		 */
 		public Builder httpMethod(HttpMethod httpMethod) {
 			this.httpMethod = httpMethod;
@@ -221,7 +207,7 @@ public class HttpRequest {
 		 *
 		 * @param headers,
 		 *            a set of headers used for api call
-		 * @return a {@link Builder} with setted headers
+		 * @return a {@link Builder} with headers set
 		 */
 		public Builder headers(Map<String, String> headers) {
 			this.headers = headers;
@@ -233,7 +219,7 @@ public class HttpRequest {
 		 *
 		 * @param queryParams,
 		 *            the query string used to compose the api call
-		 * @return a {@link Builder} with a setted query string parameters
+		 * @return a {@link Builder} with a query string parameters set
 		 */
 		public Builder queryParams(Map<String, String> queryParams) {
 			this.queryParams = queryParams;
@@ -245,7 +231,7 @@ public class HttpRequest {
 		 *
 		 * @param queryString,
 		 *            the query string used to compose the api call
-		 * @return a {@link Builder} with a setted query string parameters
+		 * @return a {@link Builder} with a query string parameters set
 		 */
 		public Builder queryString(String queryString) {
 			this.queryString = queryString;
@@ -256,8 +242,8 @@ public class HttpRequest {
 		 * Setter method for the body parameters
 		 *
 		 * @param bodyParams,
-		 *            the body parameters used to componse the api call
-		 * @return a {@link Builder} with a setted body parameters
+		 *            the body parameters used to compose the api call
+		 * @return a {@link Builder} with a body parameters set
 		 */
 		public Builder bodyParams(Map<String, String> bodyParams) {
 			this.bodyParams = bodyParams;
