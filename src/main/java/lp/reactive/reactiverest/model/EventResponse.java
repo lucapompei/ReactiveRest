@@ -26,7 +26,7 @@ public class EventResponse {
     /**
      * The possible caught error
      */
-    private Throwable httpError;
+    private String httpErrorMessage;
 
     /**
      * Construct a new {@link EventResponse} on the base of the given
@@ -49,12 +49,12 @@ public class EventResponse {
      *
      * @param identifier,
      *         the event unique identifier
-     * @param httpError,
-     *         the error obtained from http request
+     * @param httpErrorMessage,
+     *         the error message obtained from http request
      */
-    public EventResponse(String identifier, Throwable httpError) {
+    public EventResponse(String identifier, String httpErrorMessage) {
         this.identifier = identifier;
-        this.httpError = httpError;
+        this.httpErrorMessage = httpErrorMessage;
         this.isSuccess = false;
     }
 
@@ -90,7 +90,7 @@ public class EventResponse {
      *
      * @return the caught error
      */
-    public Throwable getEventError() {
-        return httpError;
+    public String getEventErrorMessage() {
+        return httpErrorMessage;
     }
 }

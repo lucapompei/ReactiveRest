@@ -33,10 +33,10 @@ public class JsonUtils {
 	}
 
 	/**
-	 * Static method used to initialize and retrieve the {@link ObjectMapper}
+	 * Static method used to initialize and retrieve the {@code ObjectMapper}
 	 * instance
 	 *
-	 * @return a valid {@link ObjectMapper} instance
+	 * @return a valid {@code ObjectMapper} instance
 	 */
 	private static ObjectMapper getInstance() {
 		if (instance != null) {
@@ -50,7 +50,7 @@ public class JsonUtils {
 	}
 
 	/**
-	 * Create a Jackson converter instance using an instance of {@link ObjectMapper}
+	 * Create a Jackson converter instance using an instance of {@code ObjectMapper}
 	 * for json conversion
 	 *
 	 * @return an instance of {@link JacksonConverterFactory}

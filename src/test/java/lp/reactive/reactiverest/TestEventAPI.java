@@ -91,7 +91,7 @@ public class TestEventAPI {
 				System.out.println(eventResponse.getEventResponse().toString());
 			} else {
 				// use http error
-				System.out.println(eventResponse.getEventError());
+				System.out.println(eventResponse.getEventErrorMessage());
 			}
 		}
 	}

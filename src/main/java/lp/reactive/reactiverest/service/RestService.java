@@ -331,7 +331,7 @@ public class RestService {
 				}
 			} catch (ExecutionException | IOException ex) {
 				// preparing the event response based on http error
-				EventResponse eventResponse = new EventResponse(eventIdentifier, ex);
+				EventResponse eventResponse = new EventResponse(eventIdentifier, ex.getMessage());
 				// dispatching event response on event bus
 				LOGGER.error("Error during preparing event response for event " + eventIdentifier, ex.getMessage());
 				coordinatorService.post(eventResponse);
