@@ -162,6 +162,15 @@ Downloadable .jars can be found on the [Bintray download page][binary].
 
 You can also depend on the .jar through Maven:
 
+adding jCenter to the list of your repositories:
+
+```xml
+<repository>
+    <id>jcenter</id>
+    <url>http://dl.bintray.com/lucapompei/maven</url>
+</repository>
+```
+
 ```xml
 <dependency>
   <groupId>lp.reactive</groupId>
