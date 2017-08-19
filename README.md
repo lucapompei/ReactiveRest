@@ -162,8 +162,6 @@ Downloadable .jars can be found on the [Bintray download page][binary].
 
 You can also depend on the .jar through Maven:
 
-adding jCenter to the list of your repositories:
-
 ```xml
 <repository>
     <id>jcenter</id>
@@ -177,12 +175,6 @@ adding jCenter to the list of your repositories:
   <artifactId>ReactiveRest</artifactId>
   <version>1.11</version>
 </dependency>
-```
-
-or Gradle:
-
-```groovy
-compile "lp.reactive:ReactiveRest:1.11"
 ```
 
 
