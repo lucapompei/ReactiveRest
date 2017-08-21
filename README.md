@@ -12,11 +12,11 @@ Using this library, you can make 4 different types of HTTP REST communications:
     
 2) <strong>Asynchronous HTTP request:</strong> each HTTP response is asynchronously obtained, using the Retrofit queue implementation;
     
-3) <strong>Event based HTTP request:</strong> each HTTP response is asynchronously processed and then dispatched on a common Event Bus to all registered entity (i.e. it's used the Guava Event Bus implementation for this purpose); 
+3) <strong>Event based HTTP request:</strong> each HTTP response is asynchronously processed and then dispatched on a common Event Bus to all registered entities (i.e. it's used the Guava Event Bus implementation for this purpose); 
     
 4) <strong>Reactive HTTP request:</strong> based on Reactive programming paradigm, each HTTP response is asynchronously prepared, taking the advantage of using Observable, so that each Observer interested and subscribed to it, can obtain the response when it is processed.
 
-The Reactive REST client supports GET, POST, PUT and DELETE HTTP method and lets you indicate the maximum number of attempts to use to repeat an api call if an error occurs.
+The Reactive REST client supports GET, POST, PUT and DELETE http methods and lets you indicate the maximum number of attempts to use to repeat an api call if an error occurs.
 
 
 Summary features
