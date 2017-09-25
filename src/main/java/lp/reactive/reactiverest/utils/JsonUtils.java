@@ -39,14 +39,12 @@ public class JsonUtils {
 	 * @return a valid {@code ObjectMapper} instance
 	 */
 	private static ObjectMapper getInstance() {
-		if (instance != null) {
-			return instance;
-		} else {
+		if (instance == null) {
 			// lazy initialization
 			instance = new ObjectMapper();
 			instance.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
-			return instance;
 		}
+		return instance;
 	}
 
 	/**
