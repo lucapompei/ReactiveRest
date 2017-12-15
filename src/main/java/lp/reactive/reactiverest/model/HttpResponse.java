@@ -1,5 +1,7 @@
 package lp.reactive.reactiverest.model;
 
+import java.io.IOException;
+
 import lp.reactive.reactiverest.utils.JsonUtils;
 import okhttp3.ResponseBody;
 import retrofit2.Response;
@@ -65,7 +67,11 @@ public class HttpResponse {
 		if (rawResponse.isSuccessful()) {
 			ResponseBody responseBody  = rawResponse.body();
 			if (responseBody != null) {
-				return responseBody.toString();
+				try {
+					return responseBody.string();
+				} catch (IOException e) {
+					return null;
+				}
 			} else {
 				return JsonUtils.toJson(rawResponse.errorBody());
 			}
