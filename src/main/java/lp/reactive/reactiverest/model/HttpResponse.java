@@ -3,6 +3,7 @@ package lp.reactive.reactiverest.model;
 import java.io.IOException;
 
 import lp.reactive.reactiverest.utils.JsonUtils;
+import okhttp3.Headers;
 import okhttp3.ResponseBody;
 import retrofit2.Response;
 
@@ -19,8 +20,8 @@ public class HttpResponse {
 	private Response<ResponseBody> rawResponse;
 
 	/**
-	 * Construct a {@link HttpResponse} using the raw response obtained from
-	 * http request
+	 * Construct a {@link HttpResponse} using the raw response obtained from http
+	 * request
 	 *
 	 * @param rawResponse,
 	 *            the raw response obtained from http request
@@ -65,7 +66,7 @@ public class HttpResponse {
 	 */
 	public String getJsonBody() {
 		if (rawResponse.isSuccessful()) {
-			ResponseBody responseBody  = rawResponse.body();
+			ResponseBody responseBody = rawResponse.body();
 			if (responseBody != null) {
 				try {
 					return responseBody.string();
@@ -81,11 +82,18 @@ public class HttpResponse {
 	}
 
 	/**
-	 * Return a boolean indicating if the http response has been successful or
-	 * not
+	 * Return the headers from the http response
+	 * 
+	 * @return the headers from the http response
+	 */
+	public Headers getHeaders() {
+		return rawResponse.headers();
+	}
+
+	/**
+	 * Return a boolean indicating if the http response has been successful or not
 	 *
-	 * @return a boolean indicating if the http response has been successful or
-	 *         not
+	 * @return a boolean indicating if the http response has been successful or not
 	 */
 	public boolean isSuccessful() {
 		return rawResponse.isSuccessful();
