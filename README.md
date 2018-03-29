@@ -174,7 +174,7 @@ You can also depend on the .jar through Maven:
 <dependency>
   <groupId>lp.reactive</groupId>
   <artifactId>ReactiveRest</artifactId>
-  <version>1.13</version>
+  <version>1.14</version>
 </dependency>
 ```
 
